@@ -8,14 +8,14 @@ export function PresaleCard({address, cstpPrice, cstPurchaseBalance, cstpTotalSu
     return (
         <Paper className="ohm-card">
         <Box display="flex">
-          <CardHeader title="Presale" />
+          <CardHeader title="Liquidity Bootstrap Event (LBE)" />
         </Box>
         <Grid container direction="column" spacing={2}>
           <Grid item>
             <Grid container spacing={2} alignItems="flex-end">
               <Grid item xs={6} sm={6} md={6} lg={6} />
               <Grid item xs={6} sm={6} md={6} lg={6}>
-                <Typography align="right">CST Price: <b>${cstpPrice}</b>  Purchased CST: <b>{cstPurchaseBalance.toFixed(2) | 0}</b></Typography>
+                <Typography align="right">CST Price: <b>${cstpPrice}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Purchased CST: <b>{cstPurchaseBalance.toFixed(2) | 0}</b></Typography>
               </Grid>
             </Grid>
             <Grid container spacing={2} alignItems="flex-end">

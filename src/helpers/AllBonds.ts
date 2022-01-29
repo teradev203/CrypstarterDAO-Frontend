@@ -33,12 +33,12 @@ export const dai = new StableBond({
   bondContractABI: DaiBondContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0xF46764743fF3d9B29CD6Cdb1D692221e32ef42e5",
+      bondAddress: "0xf0f73024970610222CdDb7A0e14529bda9F0a705",
       reserveAddress: addresses[NetworkID.Mainnet].DAI_ADDRESS,
     },
     [NetworkID.Testnet]: {
-      bondAddress: "0xB29dD6217cFb8C4233c5a7C4422b6F258bcD59dC", // 0xDea5668E815dAF058e3ecB30F645b04ad26374Cf
-      reserveAddress: "0xF95BD116A3A3E0053b0B757892450E5FCD55CaBF", // 0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C
+      bondAddress: "0xAFe944827fC74E09Dff22F963A0f346bFed26d42", // 0xDea5668E815dAF058e3ecB30F645b04ad26374Cf
+      reserveAddress: "0x8301F2213c0eeD49a7E28Ae4c3e91722919B8B47", // 0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C
     },
   },
 });
@@ -51,7 +51,7 @@ export const eth = new CustomBond({
   bondContractABI: EthBondContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0x87214cf488157eBD0eA93AEd2eFA2bb4493D34B9",
+      bondAddress: "0xe15700FbBa4435F061a1CA9d6746BB5773eB4400",
       reserveAddress: "0x250632378e573c6be1ac2f97fcdf00515d0aa91b",
     },
     [NetworkID.Testnet]: {
@@ -71,20 +71,20 @@ export const eth = new CustomBond({
 });
 
 export const ohm_dai = new LPBond({
-  name: "PID-BUSD",
-  displayName: "PID-BUSD LP",
+  name: "CST-BUSD",
+  displayName: "CST-BUSD LP",
   bondToken: "PID-BUSD",
   bondIconSvg: OhmDaiImg,
   bondContractABI: BondOhmDaiContract,
   reserveContract: ReserveOhmDaiContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0x20A633EF2b83bc5912e1b97ba94865B29816BE53",
-      reserveAddress: "0x3991e0988A69E4C8Fde46C011Dafe55E26fdD18D",
+      bondAddress: "0xe15700FbBa4435F061a1CA9d6746BB5773eB4400",
+      reserveAddress: "0x2a1d0Fd128cb78C8A1AF545a93d665c82bed2871",
     },
     [NetworkID.Testnet]: {
-      bondAddress: "0xB2827d9ed19eC1DcfFE55Ce58F81FCD9B2b6897B", // 0xcF449dA417cC36009a1C6FbA78918c31594B9377
-      reserveAddress: "0x1F3e1398655A58465703983E98478Da17ee5cec1", // 0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2
+      bondAddress: "0xE52c97616cd9867B8dDE365B1Df2059e206c4014", // 0xcF449dA417cC36009a1C6FbA78918c31594B9377
+      reserveAddress: "0x0Ee6b44451C8B0839b85b0CBaA07E32174db6899", // 0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2
     },
   },
   lpUrl:

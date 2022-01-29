@@ -29,10 +29,10 @@ export default function Social() {
     //   </Link>
     // </div>
     <div className="social-row " >
-      <a href="" target="_blank" className="bottomImgs" style={{marginLeft:5,marginRight:15}}><img src={img1_1} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
-      <a href="" target="_blank" className="bottomImgs" style={{marginLeft:15,marginRight:15}}><img src={img1_2} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
-      <a href="" target="_blank" className="bottomImgs" style={{marginLeft:15,marginRight:15}}><img src={medium} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
-      <a href="" target="_blank" className="bottomImgs" style={{marginLeft:15,marginRight:15}}><img src={img1_4} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
+      <a href="https://twitter.com/cst_blockchain" target="_blank" className="bottomImgs" style={{marginLeft:5,marginRight:15}}><img src={img1_1} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
+      <a href="https://github.com/Crypstarter" target="_blank" className="bottomImgs" style={{marginLeft:15,marginRight:15}}><img src={img1_2} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
+      <a href="https://crypstarter.medium.com/" target="_blank" className="bottomImgs" style={{marginLeft:15,marginRight:15}}><img src={medium} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
+      <a href="https://t.me/crypstarter" target="_blank" className="bottomImgs" style={{marginLeft:15,marginRight:15}}><img src={img1_4} alt="" className="bottomImgs2" style={{width:30,height:30}}/></a>
     </div>
   );
 }

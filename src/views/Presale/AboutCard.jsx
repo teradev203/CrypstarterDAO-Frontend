@@ -3,13 +3,13 @@ export function AboutCard() {
   return (
     <Paper className="ohm-card">
       <Box display="flex">
-        <CardHeader title="About Presale" />
+        <CardHeader title="About Liquidity Bootstrap Event (LBE)" />
       </Box>
       <Typography variant="h6">
         ● Only whitelisted users can join the pre-sale
       </Typography>
       <Typography variant="h6">
-        ● Pre-sale Date: from 25th Jan 2022 08:00:00 UTC to 27th Jan 2022 23:59:00 UTC
+        ● Pre-sale Date: from 25th Jan 2022 08:00:00 UTC to 23th Mar 2022 23:59:00 UTC
       </Typography>
       <Typography variant="h6">
         ● Token: $CST

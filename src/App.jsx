@@ -179,10 +179,10 @@ function App() {
     setIsSidebarExpanded(false);
   };
 
-  let themeMode = theme === "light" ? lightTheme : theme === "dark" ? lightTheme : lightTheme;
+  let themeMode = theme === "light" ? darkTheme : theme === "dark" ? darkTheme : darkTheme;
 
   useEffect(() => {
-    themeMode = theme === "light" ? lightTheme : lightTheme;
+    themeMode = theme === "light" ? darkTheme : darkTheme;
   }, [theme]);
 
   useEffect(() => {
@@ -191,7 +191,7 @@ function App() {
   const path = useMemo(() => window.location.pathname, [window.location.pathname]);
   return (
     <Router>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={darkTheme}>
         <CssBaseline />
 
         {/* {isAppLoading && <LoadingSplash />} */}

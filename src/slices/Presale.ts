@@ -140,6 +140,8 @@ export const redeem = createAsyncThunk(
       return;
     }
 
+    console.log("redeem");
+
     const signer = provider.getSigner();
     const fairLaunchContract = new ethers.Contract(addresses[networkID].FAIRLAUNCH_ADDRESS as string, FairLaunch, signer);
     let approveTx;
@@ -159,7 +161,7 @@ export const redeem = createAsyncThunk(
       else if (errMsg.includes("exceed limit"))
         dispatch(error("Sorry. You exceed limit"));
       else
-        dispatch(error("Claim failed"));
+        dispatch(error("Claim failed. Network has a troble. Please again"));
       console.log(errMsg);
       return;
     } finally {

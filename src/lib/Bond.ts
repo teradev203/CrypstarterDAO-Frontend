@@ -8,7 +8,7 @@ import React, { ReactNode } from "react";
 
 export enum NetworkID {
   Mainnet = 56,
-  Testnet = 4,
+  Testnet = 97,
 }
 
 export enum BondType {

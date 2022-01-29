@@ -3,11 +3,16 @@ import { NavLink } from "react-router-dom";
 import Social from "./Social";
 import externalUrls from "./externalUrls";
 import styled from 'styled-components';
-// import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
-// import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
-// import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
-// import { ReactComponent as OlympusIcon } from "../../assets/icons/olympus-nav-header.svg";
+import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
+import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
+import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
+import { ReactComponent as OlympusIcon } from "../../assets/icons/olympus-nav-header.svg";
 import { ReactComponent as PoolTogetherIcon } from "../../assets/icons/33-together.svg";
+import { ReactComponent as ZapIcon } from "../../assets/icons/zap.svg";
+import { ReactComponent as NewIcon } from "../../assets/icons/new-icon.svg";
+import { ReactComponent as WrapIcon } from "../../assets/icons/wrap.svg";
+import { ReactComponent as BridgeIcon } from "../../assets/icons/bridge.svg";
+import { ReactComponent as ArrowUpIcon } from "../../assets/icons/arrow-up.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 import useBonds from "../../hooks/Bonds";
@@ -92,23 +97,22 @@ function NavContent() {
 
           <div className="dapp-menu-links">
             <div className="dapp-nav" id="navbarNav">
-              <ANavLink
+              <Link
                 component={NavLink}
                 id="dash-nav"
                 to="/dashboard"
                 isActive={(match, location) => {
                   return checkPage(match, location, "dashboard");
                 }}
-                bg2={Dashboardimg2}
-              // className={`button-dapp-menu ${isActive ? "active" : ""}`}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6" className="fxCenter">
-                  <ANavIcon bg1={Dashboardimg} />
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={DashboardIcon} />
                   Dashboard
                 </Typography>
-              </ANavLink>
+              </Link>
 
-              <ANavLink
+              <Link
                 component={NavLink}
                 id="presale-nav"
                 to="/presale"
@@ -116,35 +120,33 @@ function NavContent() {
                   return checkPage(match, location, "Presale");
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
-                bg2={Togetherimg2}
               >
                 <Typography variant="h6">
-                  <ANavIcon bg1={Togetherimg} />
+                  <SvgIcon color="primary" component={WrapIcon} />
                   Presale
                 </Typography>
-              </ANavLink>
+              </Link>
 
-              <ANavLink
+              <Link
                 component={NavLink}
                 id="bond-nav"
                 to="/bonds"
                 isActive={(match, location) => {
                   return checkPage(match, location, "bonds");
                 }}
-                bg2={Bondimg2}
-              // className={`button-dapp-menu ${isActive ? "active" : ""}`}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6" className="fxCenter">
-                  <ANavIcon bg1={Bondimg} />
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={BondIcon} />
                   Bond
                 </Typography>
-              </ANavLink>
+              </Link>
 
               <div className="dapp-menu-data discounts">
                 <div className="bond-discounts">
                   <Typography variant="body2">Bond discounts</Typography>
                   {bonds.map((bond, i) => (
-                    <ANavLink component={NavLink} to={`/bonds/${bond.name}`} key={i} className={"bond"}>
+                    <Link component={NavLink} to={`/bonds/${bond.name}`} key={i} className={"bond"}>
                       {!bond.bondDiscount ? (
                         <Skeleton variant="text" width={"150px"} />
                       ) : (
@@ -155,29 +157,28 @@ function NavContent() {
                           </span>
                         </Typography>
                       )}
-                    </ANavLink>
+                    </Link>
                   ))}
                 </div>
               </div>
 
 
-              <ANavLink
+              <Link
                 component={NavLink}
                 id="stake-nav"
                 to="/stake"
                 isActive={(match, location) => {
                   return checkPage(match, location, "stake");
                 }}
-                bg2={Stakeimg2}
               // className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
                 <Typography variant="h6" className="fxCenter">
-                  <ANavIcon bg1={Stakeimg} />
+                  <SvgIcon color="primary" component={StakeIcon} />
                   Stake
                 </Typography>
-              </ANavLink>
+              </Link>
 
-              <ANavLink
+              <Link
                 component={NavLink}
                 id="calculator-nav"
                 to="/calculator"
@@ -185,13 +186,12 @@ function NavContent() {
                   return checkPage(match, location, "Calculator");
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
-                bg2={NFTimg2}
               >
                 <Typography variant="h6">
-                  <ANavIcon bg1={NFTimg} />
+                  <SvgIcon color="primary" component={PoolTogetherIcon} />
                   Calculator
                 </Typography>
-              </ANavLink>
+              </Link>
             </div>
           </div>
         </div>
@@ -199,10 +199,10 @@ function NavContent() {
           <div className="dapp-menu-external-links">
             {Object.keys(externalUrls).map((link, i) => {
               return (
-                <ANavLink key={i} href={`${externalUrls[link].url}`} target="_blank">
+                <Link key={i} href={`${externalUrls[link].url}`} target="_blank">
                   <Typography variant="h6">{externalUrls[link].icon}</Typography>
                   <Typography variant="h6">{externalUrls[link].title}</Typography>
-                </ANavLink>
+                </Link>
               );
             })}
           </div>
@@ -231,7 +231,6 @@ const ANavLink = styled(Link)`
   &:hover,&.active{
     text-decoration:none;
     h6{
-    color:#ffe300;
     }
     ${ANavIcon}{
       background-image: url(${props => props.bg2});

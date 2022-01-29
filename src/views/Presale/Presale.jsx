@@ -106,13 +106,25 @@ const Presale = () => {
   const cstpPrice = 10;
 
   const setCSTPBalanceCallback = (value) => {
-    setCSTPBalance(value);
-    setBUSDBalance(value * cstpPrice);
+    if ((value * 10) > MAX_DAI_AMOUNT && (value * 10) > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
+      setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
+      setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice) / cstpPrice);
+    }
+    else {
+      setCSTPBalance(value);
+      setBUSDBalance(value * cstpPrice);
+    }
   }
 
   const setBUSDBalanceCallback = (value) => {
-    setBUSDBalance(value);
-    setCSTPBalance(value / cstpPrice);
+    if (value > MAX_DAI_AMOUNT && value > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
+      setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
+      setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice) / cstpPrice);
+    }
+    else {
+      setBUSDBalance(value);
+      setCSTPBalance(value / cstpPrice);
+    }
   }
 
 
@@ -144,9 +156,14 @@ const Presale = () => {
       return dispatch(info("Sorry, You can only make 1 purchase with maximum 1000 BUSD"));
     }
 
+    if (busdBalance > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
+      setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
+      return dispatch(info("Sorry, You can only make purchase with maximum 1000 BUSD"));
+    }
+
     if (busdBalance > daiBalance) {
       setBUSDBalanceCallback(daiBalance);
-      return dispatch(info("Sorry, You have no enough balance of BUSD"));
+      return dispatch(info("Sorry, your BUSD balance is not sufficient to make the purchase"));
     }
 
     // 1st catch if quantity > balance
@@ -159,10 +176,11 @@ const Presale = () => {
     setCSTPBalanceCallback(0);
   };
 
+  console.log('MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice', cstPurchaseBalance);
 
-  const onClaim = (isStake) => async action => {
+  const onClaim = async action => {
     // eslint-disable-next-line no-restricted-globals
-    await dispatch(redeem({ isStake: isStake, provider, address, networkID: chainID }));
+    await dispatch(redeem({ provider, address, networkID: chainID }));
   };
 
 
@@ -253,7 +271,7 @@ const Presale = () => {
       color="primary"
       disabled={isPendingTxn(pendingTransactions, "redeem_presale")}
       onClick={() => {
-        onClaim(false);
+        onClaim();
       }}
     >
       {txnButtonText(pendingTransactions, "redeem_presale", "Claim")}
@@ -266,12 +284,12 @@ const Presale = () => {
       className="stake-button"
       variant="contained"
       color="primary"
-      disabled={isPendingTxn(pendingTransactions, "redeem_presale")}
+      disabled={true}
       onClick={() => {
-        onClaim(true);
+        onClaim();
       }}
     >
-      {txnButtonText(pendingTransactions, "redeem_presale", "Claim and Stake")}
+      {/*txnButtonText(pendingTransactions, "redeem_presale", "Claim and Stake")*/ "Claim and Stake"}
     </Button>
   )
 
