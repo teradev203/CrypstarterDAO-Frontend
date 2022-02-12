@@ -20,11 +20,12 @@ export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
   const reserves = await pairContract.getReserves();
 
   
-  const reserves0 = getDisplayBalance(reserves[0],18)
-  const reserves1 = getDisplayBalance(reserves[1],9,2)
-  const marketPrice = (Number(reserves0))/Number(reserves1);
+  const reserves0 = getDisplayBalance(reserves[1],9)
+  const reserves1 = getDisplayBalance(reserves[0],18,2)
+  const marketPrice = (Number(reserves1))/Number(reserves0);
   console.log('marketPrice', marketPrice);
   console.log('reserve0', reserves0);
+  console.log('reserve1', reserves1);
 
   // console.error('测试参数')
   // console.error(marketPrice)

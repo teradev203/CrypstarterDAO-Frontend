@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
@@ -48,6 +48,9 @@ function Calculator() {
   const [view, setView] = useState(0);
   const [quantity, setQuantity] = useState("");
 
+  const [potentialReturn, setPotentialReturn] = useState("0");
+  const [rewardsEstimation, setRewardsEstimation] = useState("0");
+  const [days, setDays] = useState(30);
   const isAppLoading = useSelector(state => state.app.loading);
   const currentIndex = useSelector(state => {
     return state.app.currentIndex;
@@ -86,9 +89,15 @@ function Calculator() {
     return state.app.stakingTVL;
   });
 
+  const marketPrice = useSelector(state => {
+    return state.app.marketPrice;
+  });
+
   const pendingTransactions = useSelector(state => {
     return state.pendingTransactions;
   });
+
+
 
   const setMax = () => {
     if (view === 0) {
@@ -150,9 +159,55 @@ function Calculator() {
       .reduce((a, b) => a + b, 0)
       .toFixed(4),
   );
+
   const trimmedStakingAPY = trim(stakingAPY * 100, 1);
+  const trimmedMemoBalance = trim(Number(ohmBalance), 6);
+  const trimeMarketPrice = trim(marketPrice, 2);
+  const [futureMarketPrice, setFutureMarketPrice] = useState(trimeMarketPrice);
   const stakingRebasePercentage = trim(stakingRebase * 100, 4);
   const nextRewardValue = trim((stakingRebasePercentage / 100) * trimmedBalance, 4);
+  const [priceAtPurchase, setPriceAtPurchase] = useState(trimeMarketPrice);
+  const [memoAmount, setMemoAmount] = useState(trimmedMemoBalance);
+  const [rewardYield, setRewardYield] = useState(trimmedStakingAPY);
+
+  const calcInitialInvestment = () => {
+    const memo = Number(memoAmount) || 0;
+    const price = parseFloat(priceAtPurchase) || 0;
+    const amount = memo * price;
+    return trim(amount, 2);
+  };
+
+  const calcCurrentWealth = () => {
+    const memo = Number(memoAmount) || 0;
+    const price = parseFloat(trimeMarketPrice);
+    const amount = memo * price;
+    return trim(amount, 2);
+  };
+
+
+  const calcNewBalance = () => {
+    let value = parseFloat(rewardYield) / 100;
+    value = Math.pow(value - 1, 1 / (365 * 3)) - 1 || 0;
+    let balance = Number(memoAmount);
+    for (let i = 0; i < days * 3; i++) {
+      balance += balance * value;
+    }
+    return balance;
+  };
+  const [initialInvestment, setInitialInvestment] = useState(calcInitialInvestment());
+
+  useEffect(() => {
+    const newInitialInvestment = calcInitialInvestment();
+    setInitialInvestment(newInitialInvestment);
+  }, [memoAmount, priceAtPurchase]);
+
+
+  useEffect(() => {
+    const newBalance = calcNewBalance();
+    setRewardsEstimation(trim(newBalance, 6));
+    const newPotentialReturn = newBalance * (parseFloat(futureMarketPrice) || 0);
+    setPotentialReturn(trim(newPotentialReturn, 2));
+  }, [days, rewardYield, futureMarketPrice, memoAmount]);
 
   return (
     <div id="stake-view">
@@ -235,13 +290,14 @@ function Calculator() {
                 <Grid item xs={12} sm={6} md={6} lg={6}>
                   <FormControl className="ohm-input" variant="outlined" color="primary" fullWidth>
                     <div>
-                      <p>Current Valance</p>
+                      <p>CST Amount</p>
                     </div>
                     <OutlinedInput
                       id="outlined-adornment-amount"
                       type="number"
-                      placeholder=""
-                      value={quantity}
+                      placeholder="0"
+                      value={memoAmount}
+                      onChange={e => setMemoAmount(e.target.value)}
                       // startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       labelWidth={0}
                       endAdornment={
@@ -257,17 +313,17 @@ function Calculator() {
                 <Grid item xs={12} sm={6} md={6} lg={6}>
                   <FormControl className="ohm-input" variant="outlined" color="primary" fullWidth>
                     <div>
-                      <p>Amount</p>
+                      <p>APY(%)</p>
                     </div>
+
                     <OutlinedInput
                       type="number"
-                      value={quantity}
-                      // startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                      value={trimmedStakingAPY}
                       labelWidth={0}
                       endAdornment={
                         <InputAdornment position="end">
                           <Button variant="text" onClick={setMax}>
-                            Max
+                            Current
                           </Button>
                         </InputAdornment>
                       }
@@ -279,19 +335,20 @@ function Calculator() {
                 <Grid item xs={12} sm={6} md={6} lg={6}>
                   <FormControl className="ohm-input" variant="outlined" color="primary" fullWidth>
                     <div>
-                      <p>Current Valance</p>
+                      <p>CST price at purchase ($)</p>
                     </div>
                     <OutlinedInput
                       id="outlined-adornment-amount"
                       type="number"
-                      placeholder=""
-                      value={quantity}
+                      placeholder="0"
+                      value={priceAtPurchase}
+                      onChange={e => setPriceAtPurchase(e.target.value)}
                       // startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       labelWidth={0}
                       endAdornment={
                         <InputAdornment position="end">
                           <Button variant="text" onClick={setMax}>
-                            Max
+                            Current
                           </Button>
                         </InputAdornment>
                       }
@@ -301,17 +358,17 @@ function Calculator() {
                 <Grid item xs={12} sm={6} md={6} lg={6}>
                   <FormControl className="ohm-input" variant="outlined" color="primary" fullWidth>
                     <div>
-                      <p>Amount</p>
+                      <p>Future CST market price ($)</p>
                     </div>
                     <OutlinedInput
                       type="number"
-                      value={quantity}
+                      value={trim(marketPrice * 1.5, 2)}
                       // startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       labelWidth={0}
                       endAdornment={
                         <InputAdornment position="end">
                           <Button variant="text" onClick={setMax}>
-                            Max
+                            Current
                           </Button>
                         </InputAdornment>
                       }
@@ -322,9 +379,51 @@ function Calculator() {
               <Grid container spacing={2} alignItems="flex-end">
                 <Grid item xs={12} sm={12} md={12} lg={12}>
                   <div>
-                    <p>Amount</p>
+                    <p className="calculator-days-slider-wrap-title">{`${days} day${days > 1 ? "s" : ""}`}</p>
                   </div>
-                  <Slider className="calculator-days-slider" min={1} max={365} value={56} />
+                  <Slider className="calculator-days-slider" min={1} max={365} value={days} onChange={(e, newValue) => setDays(newValue)} />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container spacing={2} alignItems="flex-end">
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6">Your initial investment</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  {isAppLoading ? <Skeleton width="80px" /> : <Typography variant="h6" align={"right"}>${initialInvestment}</Typography>}
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="flex-end">
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6">Current wealth</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  {isAppLoading ? <Skeleton width="80px" /> : <Typography variant="h6" align={"right"}>${calcCurrentWealth()}</Typography>}
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="flex-end">
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6">CST rewards estimation</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6" align={"right"}>{isAppLoading ? <Skeleton width="80px" /> : <>{trim(rewardsEstimation, 2)} CST</>}</Typography>
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="flex-end">
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6">Potential return</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6" align={"right"}>{isAppLoading ? <Skeleton width="80px" /> : <>${potentialReturn}</>}</Typography>
+                </Grid>
+              </Grid>
+              <Grid container spacing={2} alignItems="flex-end">
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6">Potential number of lambos</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Typography variant="h6" align={"right"}>{isAppLoading ? <Skeleton width="80px" /> : <>{Math.floor(Number(potentialReturn) / 220000)}</>}</Typography>
                 </Grid>
               </Grid>
             </Grid>

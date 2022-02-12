@@ -112,26 +112,26 @@ export const loadAccountDetails = createAsyncThunk(
       // poolAllowance = await sohmContract.allowance(address, addresses[networkID].PT_PRIZE_POOL_ADDRESS);
     }
    
-    if (addresses[networkID].PT_TOKEN_ADDRESS) {
-      const poolTokenContract = await new ethers.Contract(addresses[networkID].PT_TOKEN_ADDRESS, ierc20Abi, provider);
-      poolBalance = await poolTokenContract.balanceOf(address);
-    }
+    // if (addresses[networkID].PT_TOKEN_ADDRESS) {
+    //   const poolTokenContract = await new ethers.Contract(addresses[networkID].PT_TOKEN_ADDRESS, ierc20Abi, provider);
+    //   poolBalance = await poolTokenContract.balanceOf(address);
+    // }
 
 
 
-    for (const fuseAddressKey of ["FUSE_6_SOHM", "FUSE_18_SOHM"]) {
-      if (addresses[networkID][fuseAddressKey]) {
-        const fsohmContract = await new ethers.Contract(
-          addresses[networkID][fuseAddressKey] as string,
-          fuseProxy,
-          provider,
-        );
-        fsohmContract.signer;
-        const exchangeRate = ethers.utils.formatEther(await fsohmContract.exchangeRateStored());
-        const balance = ethers.utils.formatUnits(await fsohmContract.balanceOf(address), "gwei");
-        fsohmBalance += Number(balance) * Number(exchangeRate);
-      }
-    }
+    // for (const fuseAddressKey of ["FUSE_6_SOHM", "FUSE_18_SOHM"]) {
+    //   if (addresses[networkID][fuseAddressKey]) {
+    //     const fsohmContract = await new ethers.Contract(
+    //       addresses[networkID][fuseAddressKey] as string,
+    //       fuseProxy,
+    //       provider,
+    //     );
+    //     fsohmContract.signer;
+    //     const exchangeRate = ethers.utils.formatEther(await fsohmContract.exchangeRateStored());
+    //     const balance = ethers.utils.formatUnits(await fsohmContract.balanceOf(address), "gwei");
+    //     fsohmBalance += Number(balance) * Number(exchangeRate);
+    //   }
+    // }
    
     if (addresses[networkID].WSPID_ADDRESS) {
       const wsohmContract = new ethers.Contract(addresses[networkID].WSPID_ADDRESS as string, wsOHM, provider);

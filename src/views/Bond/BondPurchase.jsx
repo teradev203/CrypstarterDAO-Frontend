@@ -37,10 +37,15 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
   });
 
   const vestingPeriod = () => {
-    const vestingBlock = parseInt(currentBlock) + parseInt(bond.vestingTerm);
+    if (0) {
+      const vestingBlock = parseInt(currentBlock) + parseInt(bond.vestingTerm);
 
-    const seconds = secondsUntilBlock(currentBlock, vestingBlock);
-    return prettifySeconds(seconds, "day");
+      const seconds = secondsUntilBlock(currentBlock, vestingBlock);
+      return prettifySeconds(seconds, "day");
+  
+    } else {
+      return prettifySeconds(bond.vestingTerm, "day");
+    }
   };
 
   async function onBond() {

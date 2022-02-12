@@ -78,6 +78,7 @@ export const calcBondDetails = createAsyncThunk(
     const bondCalcContract = getBondCalculator(networkID, provider);
 
     const terms = await bondContract.terms();
+    console.log("vesting term: ", terms.vestingTerm.toString());
     const maxBondPrice = await bondContract.maxPayout();
     const debtRatio = (await bondContract.standardizedDebtRatio()) / Math.pow(10, 9);
     let marketPrice: number = 0;

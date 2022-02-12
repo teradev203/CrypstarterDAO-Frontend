@@ -4,7 +4,6 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
   .rebase-timer {
     margin: 0 !important;
     line-height: 110% !important;
@@ -38,6 +37,7 @@
     text-align: center;
     font-style: italic;
   }
+
 }
 
 .migrate-sohm-button {
@@ -235,30 +235,32 @@
   }
 }
 
-.calculator-days-slider{
-  .MuiSlider-rail, .MuiSlider-track{
-      height: 10px;
+.calculator-days-slider {
+  .MuiSlider-rail,
+  .MuiSlider-track {
+    height: 10px;
   }
 
-  .MuiSlider-rail{
-      background: #232323;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-      border: 1px solid #64C9FC;
+  .MuiSlider-rail {
+    background: #232323;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 1px solid #64c9fc;
+    box-sizing: border-box;
   }
 
-  .MuiSlider-track{
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-      background: linear-gradient(90deg, #64C9FC 0%, #446CF6 90%);
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  .MuiSlider-track {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background: linear-gradient(90deg, #64c9fc 0%, #446cf6 90%);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   }
 
-  .MuiSlider-thumb{
-      width: 20px;
-      height: 20px;
-      background: #232323;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-      border: 2px solid #446CF6;
+  .MuiSlider-thumb {
+    width: 20px;
+    height: 20px;
+    background: #232323;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid #446cf6;
   }
 }

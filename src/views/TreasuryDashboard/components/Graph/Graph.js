@@ -9,19 +9,21 @@ export const Graph = ({ children }) => <>{children}</>;
 export const TotalValueDepositedGraph = () => {
   const theme = useTheme();
   const { data } = useTreasuryMetrics({ refetchOnMount: false });
+
+  console.log(data);
   return (
     <Chart
       type="area"
       data={data}
       itemType={itemType.dollar}
       itemNames={tooltipItems.tvl}
-      dataKey={["totalValueLocked"]}
+      dataKey={[""]}
       headerText="Total Value Deposited"
       stopColor={[["#768299", "#98B3E9"]]}
       bulletpointColors={bulletpoints.tvl}
       infoTooltipMessage={tooltipInfoMessages.tvl}
       expandedGraphStrokeColor={theme.palette.graphStrokeColor}
-      headerSubText={`${data && formatCurrency(data[0].totalValueLocked)}`}
+      headerSubText={`${data && formatCurrency(0)}`}
     />
   );
 };
@@ -35,11 +37,7 @@ export const MarketValueGraph = () => {
       type="stack"
       data={data}
       dataKey={[
-        "treasuryDaiMarketValue",
-        "treasuryFraxMarketValue",
-        "treasuryWETHMarketValue",
-        "treasuryXsushiMarketValue",
-        "treasuryLusdMarketValue",
+        "",
       ]}
       stopColor={[
         ["#F5AC37", "#EA9276"],
@@ -49,7 +47,7 @@ export const MarketValueGraph = () => {
         ["#ff758f", "#c9184a"],
       ]}
       headerText="Market Value of Treasury Assets"
-      headerSubText={`${data && formatCurrency(data[0].treasuryMarketValue)}`}
+      headerSubText={`${data && formatCurrency(0)}`}
       bulletpointColors={bulletpoints.coin}
       itemNames={tooltipItems.coin}
       itemType={itemType.dollar}
@@ -68,7 +66,7 @@ export const RiskFreeValueGraph = () => {
       type="stack"
       data={data}
       format="currency"
-      dataKey={["treasuryDaiRiskFreeValue", "treasuryFraxRiskFreeValue", "treasuryLusdRiskFreeValue"]}
+      dataKey={[""]}
       stopColor={[
         ["#F5AC37", "#EA9276"],
         ["#768299", "#98B3E9"],
@@ -77,7 +75,7 @@ export const RiskFreeValueGraph = () => {
         ["#000", "#fff"],
       ]}
       headerText="Risk Free Value of Treasury Assets"
-      headerSubText={`${data && formatCurrency(data[0].treasuryRiskFreeValue)}`}
+      headerSubText={`${data && formatCurrency(0)}`}
       bulletpointColors={bulletpoints.rfv}
       itemNames={tooltipItems.rfv}
       itemType={itemType.dollar}
@@ -99,12 +97,12 @@ export const ProtocolOwnedLiquidityGraph = () => {
       dataFormat="percent"
       itemNames={tooltipItems.pol}
       itemType={itemType.percentage}
-      dataKey={["treasuryOhmDaiPOL"]}
+      dataKey={[""]}
       bulletpointColors={bulletpoints.pol}
       infoTooltipMessage={tooltipInfoMessages.pol}
       headerText="Protocol Owned Liquidity CST-DAI"
       expandedGraphStrokeColor={theme.palette.graphStrokeColor}
-      headerSubText={`${data && trim(data[0].treasuryOhmDaiPOL, 2)}% `}
+      headerSubText={`${data && trim(0, 2)}% `}
       stopColor={[["rgba(128, 204, 131, 1)", "rgba(128, 204, 131, 0)"]]}
     />
   );
@@ -128,14 +126,14 @@ export const OHMStakedGraph = () => {
       isStaked
       type="area"
       data={staked}
-      dataKey={["staked"]}
+      dataKey={[""]}
       dataFormat="percent"
       headerText="CST Staked"
       stopColor={[["#55EBC7", "#47ACEB"]]}
       bulletpointColors={bulletpoints.staked}
       infoTooltipMessage={tooltipInfoMessages.staked}
       expandedGraphStrokeColor={theme.palette.graphStrokeColor}
-      headerSubText={`${staked && trim(staked[0].staked, 2)}% `}
+      headerSubText={`${staked && trim(0, 2)}% `}
     />
   );
 };
@@ -154,11 +152,11 @@ export const RunwayAvailableGraph = () => {
     <Chart
       type="multi"
       data={runway}
-      dataKey={["runwayCurrent", "runway7dot5k", "runway5k", "runway2dot5k"]}
+      dataKey={[""]}
       color={theme.palette.text.primary}
       stroke={colors}
       headerText="Runway Available"
-      headerSubText={`${data && trim(data[0].runwayCurrent, 1)} Days`}
+      headerSubText={`${data && trim("", 1)} Days`}
       dataFormat="days"
       bulletpointColors={runwayBulletpoints}
       itemNames={tooltipItems.runway}

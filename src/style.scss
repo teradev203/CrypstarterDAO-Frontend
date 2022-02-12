@@ -1,5 +1,6 @@
 * {
     outline: none;
+    box-sizing: border-box;
     -ms-overflow-style: none !important;
     /* IE and Edge */
     scrollbar-width: none !important;
@@ -96,4 +97,4 @@ a:hover svg {
 .MuiLink-root.active {
     color: #ffe300 !important;
     text-decoration: underline;
-  }
+}

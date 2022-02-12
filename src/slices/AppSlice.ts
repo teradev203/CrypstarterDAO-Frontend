@@ -12,7 +12,7 @@ import { RootState } from "src/store";
 import { IBaseAsyncThunk } from "./interfaces";
 import { allBonds, treasuryBalanceAll } from "src/helpers/AllBonds";
 import ERC20 from '../lib/ERC20'
-import  { abi as DistributorContractAbi } from '../abi/DistributorContract.json'
+import { abi as DistributorContractAbi } from '../abi/DistributorContract.json'
 
 const initialState = {
   loading: false,
@@ -79,7 +79,7 @@ export const loadAppDetails = createAsyncThunk(
         marketPrice,
         marketCap: 0,
         circSupply: 0,
-        
+
         totalSupply: 0,
         treasuryMarketValue: 0,
       };
@@ -111,8 +111,10 @@ export const loadAppDetails = createAsyncThunk(
     const stakingReward = epoch.distribute;
     const circ = await sohmMainContract.circulatingSupply();
     const stakingRebase = stakingReward / circ;
-    
 
+    const sR = stakingReward.toNumber();
+    const cS = circ.toNumber();
+    console.log(sR, cS);
     const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
     const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
 
@@ -132,11 +134,13 @@ export const loadAppDetails = createAsyncThunk(
     const marketCap = circSupply * marketPrice
 
     const Staked = circ / 1e9 / circSupply * 100
-    const treasuryMarketValue = await treasuryBalanceAll(networkID, provider)
+    console.log("staked balance: ", circ.toString(), circSupply, marketPrice, Staked);
+
+    const treasuryMarketValue = 0; // = await treasuryBalanceAll(networkID, provider)
     // console.error('董事会资产')
     // console.error(Staked)
     // console.error(treasuryMarketValue)
-    const stakingTVL = marketCap * (Staked/100) 
+    const stakingTVL = marketCap * (Staked / 100)
     // console.error('--------totalValueLocked-------------')
 
     // const treasuryContract = new ERC20(addresses[networkID].TREASURY_ADDRESS,provider,'BUSD')
@@ -158,7 +162,7 @@ export const loadAppDetails = createAsyncThunk(
       stakingRebase,
       marketCap,
       marketPrice,
-      circVal:circ,
+      circVal: circ,
       circSupply,
       totalSupply,
       treasuryMarketValue
@@ -225,10 +229,10 @@ interface IAppData {
   readonly circSupply: number;
   readonly currentIndex?: string;
   readonly currentBlock?: number;
-  readonly endBlock?:number;
+  readonly endBlock?: number;
   readonly fiveDayRate?: number;
   readonly marketCap: number;
-  readonly circVal?:number;
+  readonly circVal?: number;
   readonly marketPrice: number;
   readonly stakingAPY?: number;
   readonly stakingRebase?: number;

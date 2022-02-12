@@ -69,16 +69,23 @@ function TreasuryDashboard() {
     return state.app.marketPrice * state.app.currentIndex;
   });
 
+  const trimmedStakingAPY = trim(stakingAPY * 100, 1);
+
   useEffect(() => {
   }, []);
 
   return (
     <div id="treasury-dashboard-view" className={`${smallerScreen && "smaller"} ${verySmallScreen && "very-small"}`}>
-      <Container style={{ paddingLeft: "3.3rem", paddingRight: "3.3rem" }}>
+      <Container
+        style={{
+          paddingLeft: smallerScreen || verySmallScreen ? "0" : "3.3rem",
+          paddingRight: smallerScreen || verySmallScreen ? "0" : "3.3rem",
+        }}
+      >
         <Zoom in={true}>
           <Paper className="ohm-card">
             <Grid container spacing={2} className="data-grid">
-              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <Typography variant="h6" color="textSecondary">
                   CST Price
                 </Typography>
@@ -88,21 +95,21 @@ function TreasuryDashboard() {
                 </Typography>
               </Grid>
 
-              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <Typography variant="h6" color="textSecondary">
                   Current Index
                   <InfoTooltip
                     message={
-                      "The current index tracks the amount of sPID accumulated since the beginning of staking. Basically, how much sPID one would have if they staked and held a single CST from day 1."
+                      "The current index tracks the amount of scST accumulated since the beginning of staking. Basically, how much scST one would have if they staked and held a single CST from day 1."
                     }
                   />
                 </Typography>
                 <Typography variant="h5">
-                  {currentIndex ? trim(currentIndex, 2) + " sPID" : <Skeleton type="text" />}
+                  {currentIndex ? trim(currentIndex, 2) + " sCST" : <Skeleton type="text" />}
                 </Typography>
               </Grid>
 
-              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <Typography variant="h6" color="textSecondary">
                   Circulating Supply (total)
                 </Typography>
@@ -115,16 +122,16 @@ function TreasuryDashboard() {
                 </Typography>
               </Grid>
 
-              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <Typography variant="h6" color="textSecondary">
-                  Backing per CST
+                  APY
                 </Typography>
                 <Typography variant="h5">
-                  {backingPerOhm ? formatCurrency(backingPerOhm, 2) : <Skeleton type="text" />}
+                  {stakingAPY ? new Intl.NumberFormat("en-US").format(trimmedStakingAPY) + '%' : <Skeleton type="text" />}
                 </Typography>
               </Grid>
 
-              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <Typography variant="h6" color="textSecondary">
                   CST Staked
                 </Typography>
@@ -132,7 +139,7 @@ function TreasuryDashboard() {
                   {staked ? `${trim(staked, 2)}%` : <Skeleton type="text" />}
                 </Typography>
               </Grid>
-              <Grid item lg={4} md={4} sm={12} xs={12}>
+              <Grid item lg={4} md={4} sm={4} xs={12}>
                 <Typography variant="h6" color="textSecondary">
                   Market Cap
                 </Typography>
@@ -145,7 +152,7 @@ function TreasuryDashboard() {
           </Paper>
         </Zoom>
         <Zoom in={true}>
-          <Grid container spacing={2} className="data-grid" style={{paddingTop: "2.2rem"}}>
+          <Grid container spacing={2} className="data-grid" style={{ paddingTop: "2.2rem" }}>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Paper className="ohm-card ohm-chart-card">
                 <TotalValueDepositedGraph />
