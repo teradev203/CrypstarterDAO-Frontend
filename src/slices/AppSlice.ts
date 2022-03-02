@@ -101,8 +101,13 @@ export const loadAppDetails = createAsyncThunk(
     const ohmMainContract = new ethers.Contract(addresses[networkID].PID_ADDRESS as string, sOHMv2, provider);
     const DistributorContract = new ethers.Contract(addresses[networkID].DISTRIBUTOR_ADDRESS as string, DistributorContractAbi, provider);
     // const sohmOldContract = new ethers.Contract(addresses[networkID].OLD_SPID_ADDRESS as string, sOHM, provider);
-
-    const endBlock = (await DistributorContract.nextEpochBlock()).toNumber()
+    let endBlock = 0;
+    try {
+      endBlock = (await DistributorContract.nextEpochBlock()).toNumber()
+    } catch(e) {
+      endBlock = currentBlock;
+    }
+    
     const totalSupply = Number(getDisplayBalance(await ohmMainContract.totalSupply(), 9));
 
 

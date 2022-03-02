@@ -151,7 +151,7 @@ function TreasuryDashboard() {
             </Grid>
           </Paper>
         </Zoom>
-        <Zoom in={true}>
+        {/* <Zoom in={true}>
           <Grid container spacing={2} className="data-grid" style={{ paddingTop: "2.2rem" }}>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Paper className="ohm-card ohm-chart-card">
@@ -201,7 +201,7 @@ function TreasuryDashboard() {
                 />
               </Paper>
             </Grid> */}
-
+{/* 
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <Paper className="ohm-card ohm-chart-card">
                 <OHMStakedGraph />
@@ -214,7 +214,7 @@ function TreasuryDashboard() {
               </Paper>
             </Grid>
           </Grid>
-        </Zoom>
+        </Zoom> */}
       </Container>
     </div>
   );

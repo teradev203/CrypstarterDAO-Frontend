@@ -14,7 +14,7 @@ export function FairLaunchCard({ address, cstPurchaseBalance, pendingPayoutPresa
             <Grid item xs={12} sm={4} md={4} lg={4} />
             <Grid item xs={12} sm={4} md={4} lg={4} align="center">
               <Typography variant="h5">
-                {cstPurchaseBalance ? `${cstPurchaseBalance}CST` : <Skeleton type="text" />}
+                {cstPurchaseBalance ? `${cstPurchaseBalance} CST` : <Skeleton type="text" />}
               </Typography>
               <Typography variant="h6" color="textSecondary" align="center">
                 Claimable Rewards
@@ -46,7 +46,7 @@ export function FairLaunchCard({ address, cstPurchaseBalance, pendingPayoutPresa
             </Grid>
             <Grid item xs={12} sm={2} md={2} lg={2}  align="right">
               <Typography variant="h7">
-                {pendingPayoutPresale ? `${pendingPayoutPresale}CST` : <Skeleton type="text" />}
+                {pendingPayoutPresale ? `${pendingPayoutPresale} CST` : <Skeleton type="text" />}
               </Typography>
             </Grid>
           </Grid>
@@ -56,7 +56,7 @@ export function FairLaunchCard({ address, cstPurchaseBalance, pendingPayoutPresa
             </Grid>
             <Grid item xs={12} sm={2} md={2} lg={2} align="right" >
               <Typography variant="h7" align="right">
-                {cstPurchaseBalance ? `${cstPurchaseBalance}CST` : <Skeleton type="text" />}
+                {cstPurchaseBalance ? `${cstPurchaseBalance} CST` : <Skeleton type="text" />}
               </Typography>
             </Grid>
           </Grid>

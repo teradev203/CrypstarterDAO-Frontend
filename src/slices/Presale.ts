@@ -115,11 +115,11 @@ export const purchaseCST = createAsyncThunk(
     } catch (e: unknown) {
       const errMsg = (e as IJsonRPCError).message;
       if (errMsg.includes("only whitelisted"))
-        dispatch(error("You are not added to whitelist. Please contact Manager."));
+        dispatch(error("Your account has not been whitelisted. Please contact Manager."));
       else if (errMsg.includes("exceed limit"))
         dispatch(error("Sorry. You exceed limit"));
       else
-        dispatch(error("Purchase failed"));
+        dispatch(error("Purchase failed."));
       console.log(errMsg);
       return;
     } finally {

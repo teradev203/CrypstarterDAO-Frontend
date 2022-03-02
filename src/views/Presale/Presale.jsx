@@ -54,7 +54,7 @@ const Presale = () => {
   const [yourOdds, setYourOdds] = useState(0);
   const [yourTotalAwards, setYourTotalAwards] = useState(0);
   const [cstpBalance, setCSTPBalance] = useState(0);
-  const [busdBalance, setBUSDBalance] = useState(0);
+  const [inputBUSDAmount, setBUSDBalance] = useState(0);
 
   // TODO (appleseed-33T): create a table for AwardHistory
   const [yourAwardHistory, setYourAwardHistory] = useState([]);
@@ -146,22 +146,22 @@ const Presale = () => {
 
   const onPurchaseCST = async action => {
     // eslint-disable-next-line no-restricted-globals
-    if (isNaN(busdBalance) || busdBalance === 0 || busdBalance === "" || !busdBalance) {
+    if (isNaN(inputBUSDAmount) || inputBUSDAmount === 0 || inputBUSDAmount === "" || !inputBUSDAmount) {
       // eslint-disable-next-line no-alert
       return dispatch(info("Please enter a value!"));
     }
 
-    if (busdBalance > MAX_DAI_AMOUNT) {
+    if (inputBUSDAmount > MAX_DAI_AMOUNT) {
       setBUSDBalanceCallback(MAX_DAI_AMOUNT);
       return dispatch(info("Sorry, You can only make 1 purchase with maximum 1000 BUSD"));
     }
 
-    if (busdBalance > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
+    if (inputBUSDAmount > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
       setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
       return dispatch(info("Sorry, You can only make purchase with maximum 1000 BUSD"));
     }
 
-    if (busdBalance > daiBalance) {
+    if (inputBUSDAmount > daiBalance) {
       setBUSDBalanceCallback(daiBalance);
       return dispatch(info("Sorry, your BUSD balance is not sufficient to make the purchase"));
     }
@@ -171,8 +171,8 @@ const Presale = () => {
     // if (gweiValue.gt(ethers.utils.parseUnits(ohmBalance, "gwei"))) {
     //   return dispatch(error("You cannot stake more than your BUSD balance."));
     // }
-    console.log("busdBalance", busdBalance);
-    await dispatch(purchaseCST({ amount: busdBalance, provider, address, networkID: chainID }));
+    console.log("inputBUSDAmount", inputBUSDAmount);
+    await dispatch(purchaseCST({ amount: inputBUSDAmount, provider, address, networkID: chainID }));
     setCSTPBalanceCallback(0);
   };
 
@@ -305,7 +305,7 @@ const Presale = () => {
               cstpTotalSupply={cstpTotalSupply}
               cstInCirculation={cstInCirculation}
               cstpBalance={cstpBalance}
-              busdBalance={busdBalance}
+              inputBUSDAmount={inputBUSDAmount}
               modalButton={modalButton}
               setMax={setMax}
               hasAllowance={hasAllowance}

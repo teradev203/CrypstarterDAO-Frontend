@@ -89,10 +89,8 @@ export const loadAccountDetails = createAsyncThunk(
       stakeAllowance = await ohmContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
     }
     
-    if (addresses[networkID].PID_ADDRESS) {
-      const pidContract = new ethers.Contract(addresses[networkID].PID_ADDRESS as string, ierc20Abi, provider);
+    if (addresses[networkID].FAIRLAUNCH_ADDRESS) {
       cstpTotalSupply = 50000000000000; //await pidContract.balanceOf(addresses[networkID].FAIRLAUNCH_ADDRESS);
-
       const fairLaunchContract = new ethers.Contract(addresses[networkID].FAIRLAUNCH_ADDRESS as string, FairLaunch, provider);
       cstInCirculation = await fairLaunchContract.totalPurchased();
       isFairLunchFinshed = await fairLaunchContract.finalized();

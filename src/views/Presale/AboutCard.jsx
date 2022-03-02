@@ -12,10 +12,10 @@ export function AboutCard() {
         ● Pre-sale Date: from 20th Mar 2022 08:00:00 UTC to 22th Mar 2022 23:59:00 UTC
       </Typography>
       <Typography variant="h6">
-        ● Token: $CST
+        ● Token: CST
       </Typography>
       <Typography variant="h6">
-        ● Price per token: 10 BUSD per $CST
+        ● Price per token: 10 BUSD per CST
       </Typography>
       <Typography variant="h6">
         ● Each whitelisted address can buy a maximum of 1000 BUSD

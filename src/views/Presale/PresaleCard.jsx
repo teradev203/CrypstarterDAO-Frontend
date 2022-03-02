@@ -3,7 +3,7 @@ import InfoTooltipMulti from "../../components/InfoTooltip/InfoTooltipMulti";
 
 import TabPanel from "../../components/TabPanel";
 import CardHeader from "../../components/CardHeader/CardHeader";
-export function PresaleCard({address, cstpPrice, cstPurchaseBalance, cstpTotalSupply, cstInCirculation, cstpBalance, busdBalance, 
+export function PresaleCard({address, cstpPrice, cstPurchaseBalance, cstpTotalSupply, cstInCirculation, cstpBalance, inputBUSDAmount, 
     hasAllowance, setCSTPBalanceCallback, setBUSDBalanceCallback, setMax, modalButton}) {
     return (
         <Paper className="ohm-card">
@@ -78,13 +78,13 @@ export function PresaleCard({address, cstpPrice, cstPurchaseBalance, cstpTotalSu
                   <OutlinedInput
                     type="number"
                     placeholder="0"
-                    value={busdBalance ? busdBalance : ''}
+                    value={inputBUSDAmount ? inputBUSDAmount : ''}
                     onChange={e => setBUSDBalanceCallback(e.target.value)}
                     // startAdornment={<InputAdornment position="start">$</InputAdornment>}
                     labelWidth={0}
                     endAdornment={
                       <InputAdornment position="end">
-                        <Button variant="text">
+                        <Button variant="text" onClick={setMax}>
                           Max
                         </Button>
                       </InputAdornment>
