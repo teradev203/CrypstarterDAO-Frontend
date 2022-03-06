@@ -9,7 +9,7 @@ export class EnvHelper {
    * @returns `process.env`
    */
   static env = process.env;
-  static alchemyTestnetURI = `https://eth-rinkeby.alchemyapi.io/v2/${EnvHelper.env.REACT_APP_TESTNET_ALCHEMY}`;
+  static alchemyTestnetURI = `https://speedy-nodes-nyc.moralis.io/cfe9228e4c2f75a9e06337c7/bsc/testnet`;
   static whitespaceRegex = /\s+/;
 
   static getOtherChainID() {
@@ -102,7 +102,7 @@ export class EnvHelper {
     let ALL_URIs = EnvHelper.getSelfHostedNode();
     if (EnvHelper.env.NODE_ENV === "development" && ALL_URIs.length === 0) {
       // push in the common ethers key in development
-      ALL_URIs.push("https://eth-mainnet.alchemyapi.io/v2/_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC");
+      ALL_URIs.push("https://speedy-nodes-nyc.moralis.io/24036fe0cb35ad4bdc12155f/bsc/mainnet");
     }
     if (ALL_URIs.length === 0) console.error("API keys must be set in the .env");
     return ALL_URIs;

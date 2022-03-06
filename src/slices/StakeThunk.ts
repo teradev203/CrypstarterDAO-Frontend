@@ -9,7 +9,7 @@ import { fetchAccountSuccess, getBalances } from "./AccountSlice";
 import { error } from "../slices/MessagesSlice";
 import { IActionValueAsyncThunk, IChangeApprovalAsyncThunk, IJsonRPCError } from "./interfaces";
 import { segmentUA } from "../helpers/userAnalyticHelpers";
-
+import { loadAccountDetails } from "./AccountSlice";
 interface IUAData {
   address: string;
   value: string;
@@ -27,8 +27,8 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const ohmContract = new ethers.Contract(addresses[networkID].PID_ADDRESS as string, ierc20Abi, signer);
-    const sohmContract = new ethers.Contract(addresses[networkID].SPID_ADDRESS as string, ierc20Abi, signer);
+    const ohmContract = new ethers.Contract(addresses[networkID].CST_ADDRESS as string, ierc20Abi, signer);
+    const sohmContract = new ethers.Contract(addresses[networkID].SCST_ADDRESS as string, ierc20Abi, signer);
     let approveTx;
     try {
       if (token === "ohm") {
@@ -96,7 +96,6 @@ export const changeStake = createAsyncThunk(
     try {
       if (action === "stake") {
         uaData.type = "stake";
-        console.log("staking: xxxxxx");
         stakeTx = await stakingHelper.stake(ethers.utils.parseUnits(value, "gwei"), address);
       } else {
         uaData.type = "unstake";
@@ -106,6 +105,7 @@ export const changeStake = createAsyncThunk(
       uaData.txHash = stakeTx.hash;
       dispatch(fetchPendingTxns({ txnHash: stakeTx.hash, text: getStakingTypeText(action), type: pendingTxnType }));
       await stakeTx.wait();
+      dispatch(loadAccountDetails({ networkID, address, provider }));
     } catch (e: unknown) {
       uaData.approved = false;
       const rpcError = e as IJsonRPCError;

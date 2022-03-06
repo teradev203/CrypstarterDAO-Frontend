@@ -25,11 +25,29 @@ import { StaticJsonRpcProvider } from "@ethersproject/providers";
 
 // TODO(zx): Further modularize by splitting up reserveAssets into vendor token definitions
 //   and include that in the definition of a bond
-export const dai = new StableBond({
+export const busd = new StableBond({
   name: "BUSD",
   displayName: "BUSD",
   bondToken: "BUSD",
-  bondIconSvg: DaiImg,
+  bondIconSvg: "",
+  bondContractABI: DaiBondContract,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: addresses[NetworkID.Mainnet].BUSDBONDDEPOSITORY_ADDRESS,
+      reserveAddress: addresses[NetworkID.Mainnet].BUSD_ADDRESS,
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: addresses[NetworkID.Testnet].BUSDBONDDEPOSITORY_ADDRESS, // 0xDea5668E815dAF058e3ecB30F645b04ad26374Cf
+      reserveAddress: addresses[NetworkID.Testnet].BUSD_ADDRESS, // 0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C
+    },
+  },
+});
+
+export const dai = new StableBond({
+  name: "DAI",
+  displayName: "DAI",
+  bondToken: "DAI",
+  bondIconSvg: "",
   bondContractABI: DaiBondContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
@@ -37,8 +55,27 @@ export const dai = new StableBond({
       reserveAddress: addresses[NetworkID.Mainnet].DAI_ADDRESS,
     },
     [NetworkID.Testnet]: {
-      bondAddress: addresses[NetworkID.Testnet].BUSDBONDDEPOSITORY_ADDRESS, // 0xDea5668E815dAF058e3ecB30F645b04ad26374Cf
-      reserveAddress: addresses[NetworkID.Testnet].BUSD_ADDRESS, // 0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C
+      bondAddress: addresses[NetworkID.Testnet].DAIBONDDEPOSITORY_ADDRESS, // 0xDea5668E815dAF058e3ecB30F645b04ad26374Cf
+      reserveAddress: addresses[NetworkID.Testnet].DAI_ADDRESS, // 0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C
+    },
+  },
+});
+
+
+export const usdt = new StableBond({
+  name: "USDT",
+  displayName: "USDT",
+  bondToken: "USDT",
+  bondIconSvg: "",
+  bondContractABI: DaiBondContract,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: addresses[NetworkID.Mainnet].USDTBONDDEPOSITORY_ADDRESS,
+      reserveAddress: addresses[NetworkID.Mainnet].USDT_ADDRESS,
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: addresses[NetworkID.Testnet].USDTBONDDEPOSITORY_ADDRESS, // 0xDea5668E815dAF058e3ecB30F645b04ad26374Cf
+      reserveAddress: addresses[NetworkID.Testnet].USDT_ADDRESS, // 0xB2180448f8945C8Cc8AE9809E67D6bd27d8B2f2C
     },
   },
 });
@@ -70,26 +107,71 @@ export const eth = new CustomBond({
   },
 });
 
-export const ohm_dai = new LPBond({
+export const ohm_busd = new LPBond({
   name: "CST-BUSD",
   displayName: "CST-BUSD LP",
   bondToken: "PID-BUSD",
-  bondIconSvg: OhmDaiImg,
+  bondIconSvg: "null",
   bondContractABI: BondOhmDaiContract,
   reserveContract: ReserveOhmDaiContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: addresses[NetworkID.Mainnet].LPBONDDEPOSITORY_ADDRESS,
-      reserveAddress: addresses[NetworkID.Mainnet].LPTOKEN_ADDRESS,
+      bondAddress: addresses[NetworkID.Mainnet].BUSDLPBONDDEPOSITORY_ADDRESS,
+      reserveAddress: addresses[NetworkID.Mainnet].BUSDLPTOKEN_ADDRESS,
     },
     [NetworkID.Testnet]: {
-      bondAddress: addresses[NetworkID.Testnet].LPBONDDEPOSITORY_ADDRESS, // 0xcF449dA417cC36009a1C6FbA78918c31594B9377
-      reserveAddress: addresses[NetworkID.Testnet].LPTOKEN_ADDRESS, // 0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2
+      bondAddress: addresses[NetworkID.Testnet].BUSDLPBONDDEPOSITORY_ADDRESS, // 0xcF449dA417cC36009a1C6FbA78918c31594B9377
+      reserveAddress: addresses[NetworkID.Testnet].BUSDLPTOKEN_ADDRESS, // 0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2
     },
   },
   lpUrl:
-   `https://pancakeswap.finance/add/${addresses[NetworkID.Mainnet].DAI_ADDRESS}/${addresses[NetworkID.Mainnet].PID_ADDRESS}`,
+   `https://pancakeswap.finance/add/${addresses[NetworkID.Mainnet].DAI_ADDRESS}/${addresses[NetworkID.Mainnet].CST_ADDRESS}`,
 });
+
+
+export const ohm_dai = new LPBond({
+  name: "CST-DAI",
+  displayName: "CST-DAI LP",
+  bondToken: "PID-DAI",
+  bondIconSvg: "null",
+  bondContractABI: BondOhmDaiContract,
+  reserveContract: ReserveOhmDaiContract,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: addresses[NetworkID.Mainnet].BUSDLPBONDDEPOSITORY_ADDRESS,
+      reserveAddress: addresses[NetworkID.Mainnet].BUSDLPTOKEN_ADDRESS,
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: addresses[NetworkID.Testnet].BUSDLPBONDDEPOSITORY_ADDRESS, // 0xcF449dA417cC36009a1C6FbA78918c31594B9377
+      reserveAddress: addresses[NetworkID.Testnet].BUSDLPTOKEN_ADDRESS, // 0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2
+    },
+  },
+  lpUrl:
+   `https://pancakeswap.finance/add/${addresses[NetworkID.Mainnet].DAI_ADDRESS}/${addresses[NetworkID.Mainnet].CST_ADDRESS}`,
+});
+
+
+export const ohm_usdt = new LPBond({
+  name: "CST-USDT",
+  displayName: "CST-USDT LP",
+  bondToken: "PID-USDT",
+  bondIconSvg: "null",
+  bondContractABI: BondOhmDaiContract,
+  reserveContract: ReserveOhmDaiContract,
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: addresses[NetworkID.Mainnet].BUSDLPBONDDEPOSITORY_ADDRESS,
+      reserveAddress: addresses[NetworkID.Mainnet].BUSDLPTOKEN_ADDRESS,
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: addresses[NetworkID.Testnet].BUSDLPBONDDEPOSITORY_ADDRESS, // 0xcF449dA417cC36009a1C6FbA78918c31594B9377
+      reserveAddress: addresses[NetworkID.Testnet].BUSDLPTOKEN_ADDRESS, // 0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2
+    },
+  },
+  lpUrl:
+   `https://pancakeswap.finance/add/${addresses[NetworkID.Mainnet].DAI_ADDRESS}/${addresses[NetworkID.Mainnet].CST_ADDRESS}`,
+});
+
 export const frax = new StableBond({
   name: "frax",
   displayName: "FRAX",
@@ -177,7 +259,7 @@ export const pid_lusd = new LPBond({
 // Add new bonds to this array!!
 // export const allBonds = [dai, frax, eth, ohm_dai, ohm_frax, lusd, pid_lusd];
 
-export const allBonds = [dai,ohm_dai]
+export const allBonds = [busd,ohm_busd, dai, ohm_dai, usdt, ohm_usdt];
 // export const allBonds:LPBond[]=[]
 export const treasuryBalanceAll = async ( networkID: NetworkID, provider: StaticJsonRpcProvider) => {
   return (await Promise.all(allBonds.map(async (item) => {

@@ -9,14 +9,14 @@ import { ReactComponent as OhmImg } from "../assets/tokens/token_OHM.svg";
 import { ReactComponent as SOhmImg } from "../assets/tokens/token_sOHM.svg";
 import LogoImg from '../assets/ohm/logo.png'
 
-import { ohm_dai } from "./AllBonds";
+import { ohm_busd } from "./AllBonds";
 import { JsonRpcSigner, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { IBaseAsyncThunk } from "src/slices/interfaces";
 
 // NOTE (appleseed): this looks like an outdated method... we now have this data in the graph (used elsewhere in the app)
 export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
-  const ohm_dai_address = ohm_dai.getAddressForReserve(networkID);
-  const pairContract = new ethers.Contract(ohm_dai_address, PairContract, provider);
+  const ohm_busd_address = ohm_busd.getAddressForReserve(networkID);
+  const pairContract = new ethers.Contract(ohm_busd_address, PairContract, provider);
   const reserves = await pairContract.getReserves();
 
   

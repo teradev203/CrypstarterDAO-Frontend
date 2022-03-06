@@ -97,8 +97,8 @@ export const loadAppDetails = createAsyncThunk(
     //   OlympusStaking,
     //   provider,
     // );
-    const sohmMainContract = new ethers.Contract(addresses[networkID].SPID_ADDRESS as string, sOHMv2, provider);
-    const ohmMainContract = new ethers.Contract(addresses[networkID].PID_ADDRESS as string, sOHMv2, provider);
+    const sohmMainContract = new ethers.Contract(addresses[networkID].SCST_ADDRESS as string, sOHMv2, provider);
+    const ohmMainContract = new ethers.Contract(addresses[networkID].CST_ADDRESS as string, sOHMv2, provider);
     const DistributorContract = new ethers.Contract(addresses[networkID].DISTRIBUTOR_ADDRESS as string, DistributorContractAbi, provider);
     // const sohmOldContract = new ethers.Contract(addresses[networkID].OLD_SPID_ADDRESS as string, sOHM, provider);
     let endBlock = 0;

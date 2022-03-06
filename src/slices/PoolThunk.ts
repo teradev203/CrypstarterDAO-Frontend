@@ -65,7 +65,7 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const sohmContract = new ethers.Contract(addresses[networkID].SPID_ADDRESS, ierc20Abi, signer);
+    const sohmContract = new ethers.Contract(addresses[networkID].SCST_ADDRESS, ierc20Abi, signer);
 
     let approveTx;
     try {

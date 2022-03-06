@@ -9,7 +9,7 @@ import { ReactComponent as sOhmTokenImg } from "../../assets/tokens/token_sOHM.s
 import { ReactComponent as ohmTokenImg } from "../../assets/tokens/token_OHM.svg";
 
 import "./ohmmenu.scss";
-import { dai, frax } from "src/helpers/AllBonds";
+import { busd, frax } from "src/helpers/AllBonds";
 import { useWeb3Context } from "../../hooks/web3Context";
 
 import OhmImg from "src/assets/tokens/pid.png";
@@ -50,8 +50,8 @@ function OhmMenu() {
 
   const networkID = chainID;
 
-  const SPID_ADDRESS = addresses[networkID].SPID_ADDRESS;
-  const PID_ADDRESS = addresses[networkID].PID_ADDRESS;
+  const SCST_ADDRESS = addresses[networkID].SCST_ADDRESS;
+  const CST_ADDRESS = addresses[networkID].CST_ADDRESS;
   const PT_TOKEN_ADDRESS = addresses[networkID].PT_TOKEN_ADDRESS;
 
   const handleClick = event => {
@@ -60,7 +60,7 @@ function OhmMenu() {
 
   const open = Boolean(anchorEl);
   const id = "ohm-popper";
-  const daiAddress = dai.getAddressForReserve(networkID);
+  const busdAddress = busd.getAddressForReserve(networkID);
   const fraxAddress = frax.getAddressForReserve(networkID);
   return (
     <Box
@@ -81,7 +81,7 @@ function OhmMenu() {
               <Paper className="ohm-menu" elevation={1}>
                 <Box component="div" className="buy-tokens">
                   <Link
-                    href={`https://pancakeswap.finance/swap?inputCurrency=${daiAddress}&outputCurrency=${PID_ADDRESS}`}
+                    href={`https://pancakeswap.finance/swap?inputCurrency=${busdAddress}&outputCurrency=${CST_ADDRESS}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -93,13 +93,13 @@ function OhmMenu() {
                   </Link>
 
                   <Link
-                    href={`https://pancakeswap.finance/add/${daiAddress}/${PID_ADDRESS}`}
+                    href={`https://pancakeswap.finance/add/${busdAddress}/${CST_ADDRESS}`}
                     target="_blank"
                     rel="noreferrer"
                   >
                     <Button size="large" variant="contained" color="secondary" fullWidth>
                       <Typography align="left">
-                      Get PID-BUSD LP <SvgIcon component={ArrowUpIcon} htmlColor="#A3A3A3" />
+                      Get CST-BUSD LP <SvgIcon component={ArrowUpIcon} htmlColor="#A3A3A3" />
                       </Typography>
                     </Button>
                   </Link>
@@ -118,11 +118,11 @@ function OhmMenu() {
                     <Divider color="secondary" />
                     <p>ADD TOKEN TO WALLET</p>
                     <Box display="flex" flexDirection="row" justifyContent="space-between">
-                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("PID", PID_ADDRESS)}>
+                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("PID", CST_ADDRESS)}>
                         <TokenIcon size={32} symbol="PID"/>
                         <Typography variant="body1">CST</Typography>
                       </Button>
-                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("sPID", SPID_ADDRESS)}>
+                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("sPID", SCST_ADDRESS)}>
                         <TokenIcon size={32} symbol="sPID"/> 
                         <Typography variant="body1">sCST</Typography>
                       </Button>

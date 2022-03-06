@@ -7,6 +7,8 @@ import { clearPendingTxn, fetchPendingTxns } from "./PendingTxnsSlice";
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { getBondCalculator } from "src/helpers/BondCalculator";
 import { RootState } from "src/store";
+import { loadAccountDetails } from "./AccountSlice";
+
 import {
   IBaseBondAsyncThunk,
   IBondAssetAsyncThunk,
@@ -185,7 +187,7 @@ export const bondAsset = createAsyncThunk(
       await bondTx.wait();
       // TODO: it may make more sense to only have it in the finally.
       // UX preference (show pending after txn complete or after balance updated)
-
+      dispatch(loadAccountDetails({ networkID, address, provider }));
       dispatch(calculateUserBondDetails({ address, bond, networkID, provider }));
     } catch (e: unknown) {
       const rpcError = e as IJsonRPCError;
@@ -233,7 +235,7 @@ export const redeemBond = createAsyncThunk(
 
       await redeemTx.wait();
       await dispatch(calculateUserBondDetails({ address, bond, networkID, provider }));
-
+      dispatch(loadAccountDetails({ networkID, address, provider }));
       dispatch(getBalances({ address, networkID, provider }));
     } catch (e: unknown) {
       uaData.approved = false;
@@ -274,7 +276,7 @@ export const redeemAllBonds = createAsyncThunk(
         bonds.forEach(async bond => {
           dispatch(calculateUserBondDetails({ address, bond, networkID, provider }));
         });
-
+        dispatch(loadAccountDetails({ networkID, address, provider }));
       dispatch(getBalances({ address, networkID, provider }));
     } catch (e: unknown) {
       dispatch(error((e as IJsonRPCError).message));
