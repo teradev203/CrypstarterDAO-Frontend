@@ -103,7 +103,7 @@ export const loadAccountDetails = createAsyncThunk(
 
 
 
-    if (addresses[networkID].SCST_ADDRESS) {
+    if (addresses[networkID].SCST_ADDRESS && addresses[networkID].STAKING_ADDRESS) {
       const sohmContract = new ethers.Contract(addresses[networkID].SCST_ADDRESS as string, sOHMv2, provider);
       sohmBalance = await sohmContract.balanceOf(address);
       unstakeAllowance = await sohmContract.allowance(address, addresses[networkID].STAKING_ADDRESS);

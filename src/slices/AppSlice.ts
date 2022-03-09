@@ -85,7 +85,9 @@ export const loadAppDetails = createAsyncThunk(
       };
     }
     const currentBlock = await provider.getBlockNumber();
-
+    if (!addresses[networkID].STAKING_ADDRESS)
+      return null;
+      
     const stakingContract = new ethers.Contract(
       addresses[networkID].STAKING_ADDRESS as string,
       OlympusStakingv2,

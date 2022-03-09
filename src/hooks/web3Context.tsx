@@ -21,12 +21,7 @@ const ALL_URIs = NodeHelper.getNodesUris();
  */
 function getMainnetURI(): string {
   // Shuffles the URIs for "intelligent" loadbalancing
-  const allURIs = ALL_URIs.sort(() => Math.random() - 0.5);
-
-  // There is no lightweight way to test each URL. so just return a random one.
-  // if (workingURI !== undefined || workingURI !== "") return workingURI as string;
-  const randomIndex = Math.floor(Math.random() * allURIs.length);
-  return allURIs[randomIndex];
+  return "https://speedy-nodes-nyc.moralis.io/24036fe0cb35ad4bdc12155f/bsc/mainnet";
 }
 
 /*
@@ -75,8 +70,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [uri, setUri] = useState(getMainnetURI());
 
-  // const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
-  const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider("https://speedy-nodes-nyc.moralis.io/24036fe0cb35ad4bdc12155f/bsc/testnet"));
+  const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
+  // const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider("https://speedy-nodes-nyc.moralis.io/24036fe0cb35ad4bdc12155f/bsc/testnet"));
 
   const [web3Modal, setWeb3Modal] = useState<Web3Modal>(
     new Web3Modal({

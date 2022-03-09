@@ -29,7 +29,7 @@ function a11yProps(index) {
   };
 }
 
-const MAX_DAI_AMOUNT = 10000;
+const MAX_DAI_AMOUNT = 100;
 
 const Presale = () => {
   const [view, setView] = useState(0);
