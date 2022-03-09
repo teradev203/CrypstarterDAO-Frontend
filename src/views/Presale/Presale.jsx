@@ -103,10 +103,10 @@ const Presale = () => {
     return state.account.presale && state.account.presale.vestingPeriodPresale;
   });
 
-  const cstpPrice = 10;
+  const cstpPrice = 5;
 
   const setCSTPBalanceCallback = (value) => {
-    if ((value * 10) > MAX_DAI_AMOUNT && (value * 10) > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
+    if ((value * cstpPrice) > MAX_DAI_AMOUNT && (value * cstpPrice) > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
       setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
       setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice) / cstpPrice);
     }
@@ -153,12 +153,12 @@ const Presale = () => {
 
     if (inputBUSDAmount > MAX_DAI_AMOUNT) {
       setBUSDBalanceCallback(MAX_DAI_AMOUNT);
-      return dispatch(info("Sorry, You can only make 1 purchase with maximum 1000 BUSD"));
+      return dispatch(info("Sorry, You can only make 1 purchase with maximum 100 BUSD"));
     }
 
     if (inputBUSDAmount > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
       setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
-      return dispatch(info("Sorry, You can only make purchase with maximum 1000 BUSD"));
+      return dispatch(info("Sorry, You can only make purchase with maximum 100 BUSD"));
     }
 
     if (inputBUSDAmount > daiBalance) {
