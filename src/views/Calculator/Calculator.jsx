@@ -161,26 +161,27 @@ function Calculator() {
   );
 
   const trimmedStakingAPY = trim(stakingAPY * 100, 1);
-  const trimmedMemoBalance = trim(Number(ohmBalance), 6);
+  const [calcAPY, setCalcAPY] = useState(trimmedStakingAPY);
+  const trimmedCSTBalance = trim(Number(ohmBalance), 6);
   const trimeMarketPrice = trim(marketPrice, 2);
   const [futureMarketPrice, setFutureMarketPrice] = useState(trimeMarketPrice);
   const stakingRebasePercentage = trim(stakingRebase * 100, 4);
   const nextRewardValue = trim((stakingRebasePercentage / 100) * trimmedBalance, 4);
   const [priceAtPurchase, setPriceAtPurchase] = useState(trimeMarketPrice);
-  const [memoAmount, setMemoAmount] = useState(trimmedMemoBalance);
+  const [cstAmount, setCSTAmount] = useState(trimmedCSTBalance);
   const [rewardYield, setRewardYield] = useState(trimmedStakingAPY);
 
   const calcInitialInvestment = () => {
-    const memo = Number(memoAmount) || 0;
+    const cst = Number(cstAmount) || 0;
     const price = parseFloat(priceAtPurchase) || 0;
-    const amount = memo * price;
+    const amount = cst * price;
     return trim(amount, 2);
   };
 
   const calcCurrentWealth = () => {
-    const memo = Number(memoAmount) || 0;
+    const cst = Number(cstAmount) || 0;
     const price = parseFloat(trimeMarketPrice);
-    const amount = memo * price;
+    const amount = cst * price;
     return trim(amount, 2);
   };
 
@@ -188,7 +189,7 @@ function Calculator() {
   const calcNewBalance = () => {
     let value = parseFloat(rewardYield) / 100;
     value = Math.pow(value - 1, 1 / (365 * 3)) - 1 || 0;
-    let balance = Number(memoAmount);
+    let balance = Number(cstAmount);
     for (let i = 0; i < days * 3; i++) {
       balance += balance * value;
     }
@@ -199,7 +200,7 @@ function Calculator() {
   useEffect(() => {
     const newInitialInvestment = calcInitialInvestment();
     setInitialInvestment(newInitialInvestment);
-  }, [memoAmount, priceAtPurchase]);
+  }, [cstAmount, priceAtPurchase, calcAPY]);
 
 
   useEffect(() => {
@@ -207,7 +208,7 @@ function Calculator() {
     setRewardsEstimation(trim(newBalance, 6));
     const newPotentialReturn = newBalance * (parseFloat(futureMarketPrice) || 0);
     setPotentialReturn(trim(newPotentialReturn, 2));
-  }, [days, rewardYield, futureMarketPrice, memoAmount]);
+  }, [days, rewardYield, futureMarketPrice, cstAmount, calcAPY]);
 
   return (
     <div id="stake-view">
@@ -228,7 +229,7 @@ function Calculator() {
                     target="_blank"
                   >
                     <NewReleases viewBox="0 0 24 24" />
-                    <Typography>Migrate sPID!</Typography>
+                    <Typography>Migrate sCST!</Typography>
                   </Link>
                 )}
               </div>
@@ -243,7 +244,7 @@ function Calculator() {
                         APY
                       </Typography>
                       <Typography variant="h4">
-                        {stakingAPY ? (
+                        {trimmedStakingAPY ? (
                           <>{new Intl.NumberFormat("en-US").format(trimmedStakingAPY)}%</>
                         ) : (
                           <Skeleton width="150px" />
@@ -296,8 +297,8 @@ function Calculator() {
                       id="outlined-adornment-amount"
                       type="number"
                       placeholder="0"
-                      value={memoAmount}
-                      onChange={e => setMemoAmount(e.target.value)}
+                      value={cstAmount}
+                      onChange={e => setCSTAmount(e.target.value)}
                       // startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       labelWidth={0}
                       endAdornment={
@@ -318,11 +319,12 @@ function Calculator() {
 
                     <OutlinedInput
                       type="number"
-                      value={trimmedStakingAPY}
+                      value={rewardYield}
                       labelWidth={0}
+                      onChange={e => setRewardYield(e.target.value)}
                       endAdornment={
                         <InputAdornment position="end">
-                          <Button variant="text" onClick={setMax}>
+                          <Button variant="text" onClick={() => setRewardYield(trimmedStakingAPY)}>
                             Current
                           </Button>
                         </InputAdornment>
