@@ -9,7 +9,7 @@ export function AboutCard() {
         ● Only whitelisted users can join the pre-sale
       </Typography>
       <Typography variant="h6">
-        ● Pre-sale Date: from 20th Mar 2022 08:00:00 UTC to 22th Mar 2022 23:59:00 UTC
+        ● Pre-sale Date: from 15th April 2022 08:00:00 UTC to 17th April 2022 23:59:00 UTC
       </Typography>
       <Typography variant="h6">
         ● Token: CST

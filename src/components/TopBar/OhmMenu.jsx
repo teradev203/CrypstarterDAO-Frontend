@@ -21,7 +21,7 @@ const addTokenToWallet = (tokenSymbol, tokenAddress) => async () => {
   if (window.ethereum) {
     const host = window.location.origin;
     // NOTE (appleseed): 33T token defaults to sOHM logo since we don't have a 33T logo yet
-    const tokenPath = tokenSymbol === "PID" ? OhmImg : SOhmImg;
+    const tokenPath = tokenSymbol === "CST" ? OhmImg : SOhmImg;
     const imageURL = `${host}/${tokenPath}`;
 
     try {
@@ -118,11 +118,11 @@ function OhmMenu() {
                     <Divider color="secondary" />
                     <p>ADD TOKEN TO WALLET</p>
                     <Box display="flex" flexDirection="row" justifyContent="space-between">
-                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("PID", CST_ADDRESS)}>
+                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("CST", CST_ADDRESS)}>
                         <TokenIcon size={32} symbol="PID"/>
                         <Typography variant="body1">CST</Typography>
                       </Button>
-                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("sPID", SCST_ADDRESS)}>
+                      <Button variant="contained" color="secondary" onClick={addTokenToWallet("sCST", SCST_ADDRESS)}>
                         <TokenIcon size={32} symbol="sPID"/> 
                         <Typography variant="body1">sCST</Typography>
                       </Button>
