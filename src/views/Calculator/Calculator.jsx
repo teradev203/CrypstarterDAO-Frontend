@@ -364,7 +364,8 @@ function Calculator() {
                     </div>
                     <OutlinedInput
                       type="number"
-                      value={trim(marketPrice * 1.5, 2)}
+                      value={futureMarketPrice}
+                      onChange={e => setFutureMarketPrice(e.target.value)}
                       // startAdornment={<InputAdornment position="start">$</InputAdornment>}
                       labelWidth={0}
                       endAdornment={
