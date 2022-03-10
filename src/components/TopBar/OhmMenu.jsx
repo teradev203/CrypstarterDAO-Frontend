@@ -113,7 +113,7 @@ function OhmMenu() {
                   </Link> */}
                 </Box>
 
-                {isEthereumAPIAvailable ? (
+                {(
                   <Box className="add-tokens">
                     <Divider color="secondary" />
                     <p>ADD TOKEN TO WALLET</p>
@@ -131,7 +131,7 @@ function OhmMenu() {
                       </Button> */}
                     </Box>
                   </Box>
-                ) : null}
+                )}
 
                 {/* <Divider color="secondary" /> */}
                 {/* <Link
