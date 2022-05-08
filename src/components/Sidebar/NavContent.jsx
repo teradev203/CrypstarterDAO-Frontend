@@ -16,7 +16,7 @@ import { ReactComponent as ArrowUpIcon } from "../../assets/icons/arrow-up.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 import useBonds from "../../hooks/Bonds";
-import { Paper, Link, Box, Typography as Typograp, SvgIcon } from "@material-ui/core";
+import { Paper, Link, Box, Typography as Typograp, SvgIcon, Divider } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import "./sidebar.scss";
 import LogoImg from '../../assets/icons/olympus-nav-header.png'
@@ -36,9 +36,6 @@ import NFTimg from '../../assets/ohm/nft-1@2x.png'
 import NFTimg2 from '../../assets/ohm/nft@2x.png'
 
 
-
-
-
 function NavContent() {
   const [isActive] = useState();
   const address = useAddress();
@@ -51,6 +48,9 @@ function NavContent() {
       return true;
     }
     if (currentPath.indexOf("stake") >= 0 && page === "stake") {
+      return true;
+    }
+    if (currentPath.indexOf("swap") >= 0 && page === "swap") {
       return true;
     }
     if (currentPath.indexOf("Presale") >= 0 && page === "Presale") {
@@ -177,13 +177,32 @@ function NavContent() {
                   Stake
                 </Typography>
               </Link>
-
+              <Box className="menu-divider">
+                <Divider />
+              </Box>
+              <Link
+                component={NavLink}
+                id="stake-nav"
+                to="#"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "swap");
+                }}
+              // className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Typography variant="h6" className="fxCenter">
+                  <SvgIcon color="primary" component={ZapIcon} />
+                  AURE Swap
+                </Typography>
+              </Link>
+              <Box className="menu-divider">
+                <Divider />
+              </Box>
               <Link
                 component={NavLink}
                 id="calculator-nav"
                 to="/calculator"
                 isActive={(match, location) => {
-                  return checkPage(match, location, "Calculator");
+                  return checkPage(match, location, "calculator");
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
