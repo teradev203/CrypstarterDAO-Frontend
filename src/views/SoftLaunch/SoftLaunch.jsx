@@ -6,20 +6,21 @@ import InfoTooltipMulti from "../../components/InfoTooltip/InfoTooltipMulti";
 
 import TabPanel from "../../components/TabPanel";
 import CardHeader from "../../components/CardHeader/CardHeader";
-import "./presale.scss";
+import "./softlaunch.scss";
 import { addresses, POOL_GRAPH_URLS } from "../../constants";
 import { useWeb3Context } from "../../hooks";
 import { apolloExt } from "../../lib/apolloClient";
 import { isPendingTxn, txnButtonText } from "src/slices/PendingTxnsSlice";
 import { calculateOdds } from "../../helpers/33Together";
 import { getPoolValues, getRNGStatus } from "../../slices/PoolThunk";
-import { purchaseCST, changeApproval, redeem } from "../../slices/Presale";
+import { purchaseCSTSF, changeApprovalSF, redeemSF } from "../../slices/SoftLaunch";
 import { trim } from "../../helpers/index";
 import { Typography, Button, Zoom } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { error, info } from "../../slices/MessagesSlice";
-import { PresaleCard } from "./PresaleCard";
-import { FairLaunchCard } from "./FairLaunchCard";
+import { AboutCard } from "./AboutCard";
+import { DepositCard } from "./DepositCard";
+import { RedeemCard } from "./RedeemCard";
 
 function a11yProps(index) {
   return {
@@ -30,7 +31,7 @@ function a11yProps(index) {
 
 const MAX_DAI_AMOUNT = 100;
 
-const Swap = () => {
+const SoftLaunch = () => {
   const [view, setView] = useState(0);
 
   const changeView = (event, newView) => {
@@ -52,8 +53,8 @@ const Swap = () => {
   const [totalSponsorship, setTotalSponsorship] = useState(0);
   const [yourOdds, setYourOdds] = useState(0);
   const [yourTotalAwards, setYourTotalAwards] = useState(0);
-  const [cstpBalance, setCSTPBalance] = useState(0);
-  const [inputBUSDAmount, setBUSDBalance] = useState(0);
+  const [cstpBalanceSL, setCSTPBalance] = useState(125);
+  const [inputBUSDAmount, setBUSDBalance] = useState(400);
 
   // TODO (appleseed-33T): create a table for AwardHistory
   const [yourAwardHistory, setYourAwardHistory] = useState([]);
@@ -66,16 +67,16 @@ const Swap = () => {
     return state.account.balances && state.account.balances.dai;
   });
 
-  const daiFaiLaunchAllowance = useSelector(state => {
-    return state.account.presale && state.account.presale.daiFaiLaunchAllowance;
+  const busdAllowanceSL = useSelector(state => {
+    return state.account.presale && state.account.presale.busdAllowanceSL;
   });
 
-  const cstInCirculation = useSelector(state => {
-    return state.account.balances && state.account.balances.cstInCirculation;
+  const cstInCirculationSL = useSelector(state => {
+    return state.account.balances && state.account.balances.cstInCirculationSL;
   });
 
-  const cstpTotalSupply = useSelector(state => {
-    return state.account.balances && state.account.balances.cstpTotalSupply;
+  const cstpTotalSupplySL = useSelector(state => {
+    return state.account.balances && state.account.balances.cstpTotalSupplySL;
   });
 
   const poolBalance = useSelector(state => {
@@ -86,28 +87,28 @@ const Swap = () => {
     return state.pendingTransactions;
   });
 
-  const cstPurchaseBalance = useSelector(state => {
-    return state.account.presale && state.account.presale.cstPurchaseBalance;
-  }) | 0;
-
-  const isFairLunchFinshed = useSelector(state => {
-    return state.account.presale && state.account.presale.isFairLunchFinshed;
+  const cstPurchaseBalanceSL = useSelector(state => {
+    return state.account.presale && state.account.presale.cstPurchaseBalanceSL;
   });
 
-  const pendingPayoutPresale = useSelector(state => {
-    return state.account.presale && state.account.presale.pendingPayoutPresale;
+  const isSoftLaunchFinished = useSelector(state => {
+    return state.account.presale && state.account.presale.isSoftLaunchFinished;
   });
 
-  const vestingPeriodPresale = useSelector(state => {
-    return state.account.presale && state.account.presale.vestingPeriodPresale;
+  const pendingPayoutPresaleSL = useSelector(state => {
+    return state.account.presale && state.account.presale.pendingPayoutPresaleSL;
   });
 
-  const cstpPrice = 5;
+  const vestingPeriodPresaleSL = useSelector(state => {
+    return state.account.presale && state.account.presale.vestingPeriodPresaleSL;
+  });
+
+  const cstpPrice = 3.2;
 
   const setCSTPBalanceCallback = (value) => {
-    if ((value * cstpPrice) > MAX_DAI_AMOUNT && (value * cstpPrice) > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
-      setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
-      setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice) / cstpPrice);
+    if ((value * cstpPrice) > MAX_DAI_AMOUNT && (value * cstpPrice) > (MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice)) {
+      setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice);
+      setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice) / cstpPrice);
     }
     else {
       setCSTPBalance(value);
@@ -116,9 +117,9 @@ const Swap = () => {
   }
 
   const setBUSDBalanceCallback = (value) => {
-    if (value > MAX_DAI_AMOUNT && value > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
-      setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
-      setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice) / cstpPrice);
+    if (value > MAX_DAI_AMOUNT && value > (MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice)) {
+      setBUSDBalance(MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice);
+      setCSTPBalance((MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice) / cstpPrice);
     }
     else {
       setBUSDBalance(value);
@@ -128,8 +129,8 @@ const Swap = () => {
 
 
   const setMax = () => {
-    if (daiBalance > MAX_DAI_AMOUNT && daiBalance > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice))
-      setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
+    if (daiBalance > MAX_DAI_AMOUNT && daiBalance > (MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice))
+      setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice);
     else
       setBUSDBalanceCallback(daiBalance);
   };
@@ -137,13 +138,13 @@ const Swap = () => {
 
   const hasAllowance = useCallback(
     () => {
-      return daiFaiLaunchAllowance > 0;
+      return busdAllowanceSL > 0;
       return 0;
     },
-    [daiFaiLaunchAllowance],
+    [busdAllowanceSL],
   )
 
-  const onPurchaseCST = async action => {
+  const onpurchaseCSTSF = async action => {
     // eslint-disable-next-line no-restricted-globals
     if (isNaN(inputBUSDAmount) || inputBUSDAmount === 0 || inputBUSDAmount === "" || !inputBUSDAmount) {
       // eslint-disable-next-line no-alert
@@ -155,8 +156,8 @@ const Swap = () => {
       return dispatch(info("Sorry, You can only make 1 purchase with maximum 100 BUSD"));
     }
 
-    if (inputBUSDAmount > (MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice)) {
-      setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice);
+    if (inputBUSDAmount > (MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice)) {
+      setBUSDBalanceCallback(MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice);
       return dispatch(info("Sorry, You can only make purchase with maximum 100 BUSD"));
     }
 
@@ -171,20 +172,20 @@ const Swap = () => {
     //   return dispatch(error("You cannot stake more than your BUSD balance."));
     // }
     console.log("inputBUSDAmount", inputBUSDAmount);
-    await dispatch(purchaseCST({ amount: inputBUSDAmount, provider, address, networkID: chainID }));
+    await dispatch(purchaseCSTSF({ amount: inputBUSDAmount, provider, address, networkID: chainID }));
     setCSTPBalanceCallback(0);
   };
 
-  console.log('MAX_DAI_AMOUNT - cstPurchaseBalance * cstpPrice', cstPurchaseBalance);
+  console.log('MAX_DAI_AMOUNT - cstPurchaseBalanceSL * cstpPrice', cstPurchaseBalanceSL);
 
   const onClaim = async action => {
     // eslint-disable-next-line no-restricted-globals
-    await dispatch(redeem({ provider, address, networkID: chainID }));
+    await dispatch(redeemSF({ provider, address, networkID: chainID }));
   };
 
 
   const onSeekApproval = async token => {
-    await dispatch(changeApproval({ address, provider, networkID: chainID }));
+    await dispatch(changeApprovalSF({ address, provider, networkID: chainID }));
   };
 
   // query correct pool subgraph depending on current chain
@@ -222,7 +223,7 @@ const Swap = () => {
 
   modalButton.push(
     <Button variant="contained" color="primary" className="connect-button" onClick={connect} key={1}>
-      Swap
+      Connect Wallet
     </Button>,
   )
 
@@ -233,7 +234,7 @@ const Swap = () => {
       color="primary"
       disabled={isPendingTxn(pendingTransactions, "buy_presale")}
       onClick={() => {
-        onPurchaseCST();
+        onpurchaseCSTSF();
       }}
     >
       {txnButtonText(pendingTransactions, "buy_presale", "Buy")}
@@ -296,14 +297,14 @@ const Swap = () => {
     <Zoom in={true}>
       <div id="pool-together-view">
         {
-          !isFairLunchFinshed ?
-            <PresaleCard
+          !isSoftLaunchFinished ?
+            <DepositCard
               address={address}
-              cstPurchaseBalance={cstPurchaseBalance}
+              cstPurchaseBalanceSL={cstPurchaseBalanceSL}
               cstpPrice={cstpPrice}
-              cstpTotalSupply={cstpTotalSupply}
-              cstInCirculation={cstInCirculation}
-              cstpBalance={cstpBalance}
+              cstpTotalSupplySL={cstpTotalSupplySL}
+              cstInCirculationSL={cstInCirculationSL}
+              cstpBalanceSL={cstpBalanceSL}
               inputBUSDAmount={inputBUSDAmount}
               modalButton={modalButton}
               setMax={setMax}
@@ -311,17 +312,18 @@ const Swap = () => {
               setCSTPBalanceCallback={setCSTPBalanceCallback}
               setBUSDBalanceCallback={setBUSDBalanceCallback}
             /> :
-            <FairLaunchCard
+            <RedeemCard
               address={address}
-              cstPurchaseBalance={cstPurchaseBalance}
-              pendingPayoutPresale={pendingPayoutPresale}
-              vestingPeriodPresale={vestingPeriodPresale}
+              cstPurchaseBalanceSL={cstPurchaseBalanceSL}
+              pendingPayoutPresaleSL={pendingPayoutPresaleSL}
+              vestingPeriodPresaleSL={vestingPeriodPresaleSL}
               claimButton={claimButton}
             />
         }
+        <AboutCard />
       </div >
     </Zoom>
   );
 };
 
-export default Swap;
+export default SoftLaunch;

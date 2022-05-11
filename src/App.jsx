@@ -16,7 +16,7 @@ import { calcBondDetails } from "./slices/BondSlice";
 import { loadAppDetails } from "./slices/AppSlice";
 import { loadAccountDetails, calculateUserBondDetails } from "./slices/AccountSlice";
 
-import { Home, Stake, ChooseBond, Bond, Dashboard, TreasuryDashboard, Presale, Swap } from "./views";
+import { Home, Stake, ChooseBond, Bond, Dashboard, TreasuryDashboard, Presale, Swap, SoftLaunch } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
@@ -224,9 +224,12 @@ function App() {
               <Route exact path="/">
                 <Redirect to="dashboard" />
               </Route>
-              <Route path="/presale">
-                <Presale />
+              <Route path="/softlaunch">
+                <SoftLaunch />
               </Route>
+              {/* <Route path="/presale">
+                <Presale />
+              </Route> */}
               <Route path="/swap">
                 <Swap />
               </Route>

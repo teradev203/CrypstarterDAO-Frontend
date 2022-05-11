@@ -2,17 +2,17 @@ import { ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
 import { abi as PresaleAbi } from "../abi/Presale.json";
-import { abi as FairLaunch } from "../abi/FairLaunch.json";
+import { abi as SoftlaunchAbi } from "../abi/SoftLaunch.json";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAccountSuccess, getBalances } from "./AccountSlice";
 import { clearPendingTxn, fetchPendingTxns } from "./PendingTxnsSlice";
-import { error } from "../slices/MessagesSlice";
+import { error } from "./MessagesSlice";
 import { IPurchaseCSTPAsyncThunk, IPurchaseCSTAsyncThunk, IBaseAddressAsyncThunk, IJsonRPCError } from "./interfaces";
 import { loadAccountDetails } from "./AccountSlice";
 
 
-export const changeApproval = createAsyncThunk(
-  "presale/changeApproval",
+export const changeApprovalSF = createAsyncThunk(
+  "softlaunch/changeApprovalSF",
   async ({ provider, address, networkID }: IBaseAddressAsyncThunk, { dispatch }) => {
     if (!provider) {
       dispatch(error("Please connect your wallet!"));
@@ -20,12 +20,12 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const daiContract = new ethers.Contract(addresses[networkID].DAI_ADDRESS as string, ierc20Abi, signer);
+    const daiContract = new ethers.Contract(addresses[networkID].BUSD_ADDRESS as string, ierc20Abi, signer);
     let approveTx;
 
     try {
       approveTx = await daiContract.approve(
-        addresses[networkID].FAIRLAUNCH_ADDRESS,
+        addresses[networkID].SOFTLAUNCH_ADDRESS,
         ethers.utils.parseUnits("1000000000", "ether").toString(),
       );
       const text = "Approve Presale";
@@ -54,45 +54,9 @@ export const changeApproval = createAsyncThunk(
   },
 );
 
-export const purchaseCSTP = createAsyncThunk(
-  "presale/purchaseCSTP",
-  async ({ amount, provider, address, networkID }: IPurchaseCSTPAsyncThunk, { dispatch }) => {
-    if (!provider) {
-      dispatch(error("Please connect your wallet!"));
-      return;
-    }
 
-    const signer = provider.getSigner();
-    const presaleContract = new ethers.Contract(addresses[networkID].PRESALE_ADDRESS as string, PresaleAbi, signer);
-    let approveTx;
-
-    try {
-      approveTx = await presaleContract.purchaseCSTP(
-        ethers.utils.parseUnits(amount.toString(), "ether")
-      );
-
-      const text = "Approve Presale";
-      const pendingTxnType = "buy_presale";
-      dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text: pendingTxnType, type: pendingTxnType }));
-
-      await approveTx.wait();
-      dispatch(loadAccountDetails({ networkID, address, provider }));
-    } catch (e: unknown) {
-      const errMsg = (e as IJsonRPCError).message;
-      dispatch(error("errMsg"));
-      return;
-    } finally {
-      if (approveTx) {
-        dispatch(clearPendingTxn(approveTx.hash));
-      }
-    }
-
-  },
-);
-
-
-export const purchaseCST = createAsyncThunk(
-  "presale/purchaseCST",
+export const purchaseCSTSF = createAsyncThunk(
+  "softlaunch/purchaseCSTSF",
   async ({ amount, provider, address, networkID }: IPurchaseCSTAsyncThunk, { dispatch }) => {
     if (!provider) {
       dispatch(error("Please connect your wallet!"));
@@ -100,10 +64,10 @@ export const purchaseCST = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const fairLaunchContract = new ethers.Contract(addresses[networkID].FAIRLAUNCH_ADDRESS as string, FairLaunch, signer);
+    const softLaunchContract = new ethers.Contract(addresses[networkID].SOFTLAUNCH_ADDRESS as string, SoftlaunchAbi, signer);
     let approveTx;
     try {
-      approveTx = await fairLaunchContract.deposit(address, ethers.utils.parseUnits(amount.toString(), "ether")
+      approveTx = await softLaunchContract.deposit(ethers.utils.parseUnits(amount.toString(), "ether")
       );
 
       const text = "Approve Presale";
@@ -132,8 +96,8 @@ export const purchaseCST = createAsyncThunk(
 );
 
 
-export const redeem = createAsyncThunk(
-  "presale/redeem",
+export const redeemSF = createAsyncThunk(
+  "softlaunch/redeemSF",
   async ({ provider, address, networkID }: IPurchaseCSTAsyncThunk, { dispatch }) => {
     if (!provider) {
       dispatch(error("Please connect your wallet!"));
@@ -143,10 +107,10 @@ export const redeem = createAsyncThunk(
     console.log("redeem");
 
     const signer = provider.getSigner();
-    const fairLaunchContract = new ethers.Contract(addresses[networkID].FAIRLAUNCH_ADDRESS as string, FairLaunch, signer);
+    const softLaunchContract = new ethers.Contract(addresses[networkID].SOFTLAUNCH_ADDRESS as string, SoftlaunchAbi, signer);
     let approveTx;
     try {
-      approveTx = await fairLaunchContract.redeem(address, false);
+      approveTx = await softLaunchContract.redeem();
 
       const text = "Redeem Presale";
       const pendingTxnType = "redeem_presale";

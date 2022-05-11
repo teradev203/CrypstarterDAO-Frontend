@@ -70,18 +70,33 @@ export const loadAccountDetails = createAsyncThunk(
     let poolAllowance = 0;
     let cstInCirculation = 0;
     let cstpTotalSupply = 0;
-    let daiFaiLaunchAllownace = 0;
+    let cstFairLaunchTotalSupply = 0;
+    let daiFaiLaunchAllowance = 0;
     let cstPurchaseBalance = 0;
     let isFairLunchFinshed = false;
     let vestingFinishedTime = 0;
     let pendingPayoutPresale = 0;
     let vestingPeriodPresale = 0;
+
+    let cstInCirculationSL = 0;
+    let cstpTotalSupplySL = 0;
+    let cstFairLaunchTotalSupplySL = 0;
+    let busdAllowanceSL = 0;
+    let cstPurchaseBalanceSL = 0;
+    let isSoftLaunchFinished = false;
+    let vestingFinishedTimeSL = 0;
+    let pendingPayoutPresaleSL = 0;
+    let vestingPeriodPresaleSL = 0;
     //let cstPurchas
     
     const daiContract = new ethers.Contract(addresses[networkID].DAI_ADDRESS as string, ierc20Abi, provider);
-    const busdBalance = await daiContract.balanceOf(address);
+    const daiBalance = await daiContract.balanceOf(address);
 
-    daiFaiLaunchAllownace = await daiContract.allowance(address, addresses[networkID].FAIRLAUNCH_ADDRESS);
+    const busdContract = new ethers.Contract(addresses[networkID].BUSD_ADDRESS as string, ierc20Abi, provider);
+    const busdBalance = await busdContract.balanceOf(address);
+
+    daiFaiLaunchAllowance = await daiContract.allowance(address, addresses[networkID].FAIRLAUNCH_ADDRESS);
+    busdAllowanceSL = await busdContract.allowance(address, addresses[networkID].SOFTLAUNCH_ADDRESS);
 
     if (addresses[networkID].CST_ADDRESS) {
       const ohmContract = new ethers.Contract(addresses[networkID].CST_ADDRESS as string, ierc20Abi, provider);
@@ -101,6 +116,17 @@ export const loadAccountDetails = createAsyncThunk(
      
     }
 
+    if (addresses[networkID].SOFTLAUNCH_ADDRESS) {
+      cstFairLaunchTotalSupplySL = 20000000000000; //await pidContract.balanceOf(addresses[networkID].FAIRLAUNCH_ADDRESS);
+      const softLaunchContract = new ethers.Contract(addresses[networkID].SOFTLAUNCH_ADDRESS as string, FairLaunch, provider);
+      cstInCirculationSL = await softLaunchContract.totalPurchased();
+      isSoftLaunchFinished = await softLaunchContract.finalized();
+      pendingPayoutPresaleSL = await softLaunchContract.pendingPayoutFor(address);
+      let userInfo = await softLaunchContract.userInfo(address);
+      cstPurchaseBalanceSL = userInfo.purchased;
+      vestingPeriodPresaleSL = (new BigNumber(userInfo.lastTime._hex).toNumber() + new BigNumber(userInfo.vesting._hex).toNumber()) * 1000;
+     
+    }
 
 
     if (addresses[networkID].SCST_ADDRESS && addresses[networkID].STAKING_ADDRESS) {
@@ -166,11 +192,13 @@ export const loadAccountDetails = createAsyncThunk(
         busdAmount
       },
       balances: {
-        dai: ethers.utils.formatEther(busdBalance),
+        dai: ethers.utils.formatEther(daiBalance),
         ohm: ethers.utils.formatUnits(ohmBalance, "gwei"),
         sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
         cstInCirculation:ethers.utils.formatEther(cstInCirculation),
         cstpTotalSupply:ethers.utils.formatUnits(cstpTotalSupply, "gwei"),
+        cstInCirculationSL:ethers.utils.formatEther(cstInCirculationSL),
+        cstpTotalSupplySL:ethers.utils.formatUnits(cstpTotalSupplySL, "gwei"),
         fsohm: fsohmBalance,
         wsohm: ethers.utils.formatUnits(wsohmBalance, "gwei"),
         pool: ethers.utils.formatUnits(poolBalance, "gwei"),
@@ -186,11 +214,17 @@ export const loadAccountDetails = createAsyncThunk(
         sohmPool: +poolAllowance,
       },
       presale: {
-        daiFaiLaunchAllownace:+daiFaiLaunchAllownace,
+        daiFaiLaunchAllowance:+daiFaiLaunchAllowance,
         cstPurchaseBalance:ethers.utils.formatUnits(cstPurchaseBalance, "gwei"),
         isFairLunchFinshed:+isFairLunchFinshed,
         pendingPayoutPresale:ethers.utils.formatUnits(pendingPayoutPresale, "gwei"),
-        vestingPeriodPresale:+vestingPeriodPresale
+        vestingPeriodPresale:+vestingPeriodPresale,
+
+        busdAllowanceSL:+busdAllowanceSL,
+        cstPurchaseBalanceSL:ethers.utils.formatUnits(cstPurchaseBalanceSL, "gwei"),
+        isSoftLaunchFinished:+isSoftLaunchFinished,
+        pendingPayoutPresaleSL:ethers.utils.formatUnits(pendingPayoutPresaleSL, "gwei"),
+        vestingPeriodPresaleS:+vestingPeriodPresaleSL
       }
     };
   },

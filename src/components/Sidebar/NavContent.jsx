@@ -53,7 +53,10 @@ function NavContent() {
     if (currentPath.indexOf("swap") >= 0 && page === "swap") {
       return true;
     }
-    if (currentPath.indexOf("Presale") >= 0 && page === "Presale") {
+    if (currentPath.indexOf("presale") >= 0 && page === "presale") {
+      return true;
+    }
+    if (currentPath.indexOf("softlaunch") >= 0 && page === "softlaunch") {
       return true;
     }
     if (currentPath.indexOf("calculator") >= 0 && page === "calculator") {
@@ -112,21 +115,34 @@ function NavContent() {
                 </Typography>
               </Link>
 
-              <Link
+              {/* <Link
                 component={NavLink}
                 id="presale-nav"
                 to="/presale"
                 isActive={(match, location) => {
-                  return checkPage(match, location, "Presale");
+                  return checkPage(match, location, "presale");
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
                 <Typography variant="h6">
                   <SvgIcon color="primary" component={WrapIcon} />
-                  Presale
+                  presale
+                </Typography>
+              </Link> */}
+              <Link
+                component={NavLink}
+                id="presale-nav"
+                to="/softlaunch"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "presale");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={WrapIcon} />
+                  SoftLaunch
                 </Typography>
               </Link>
-
               <Link
                 component={NavLink}
                 id="bond-nav"

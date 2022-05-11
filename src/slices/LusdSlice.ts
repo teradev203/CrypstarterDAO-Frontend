@@ -9,7 +9,7 @@ export const getLusdData = createAsyncThunk(
   async ({ address, networkID, provider }: IBaseAddressAsyncThunk) => {
     console.error("当前networkID", networkID);
     // only works on mainnet
-    if (networkID !== 56) {
+    if (networkID !== 97) {
       // we don't have rinkeby contracts
       return { apy: 0, tvl: 0 };
     } else {
